@@ -1,0 +1,4 @@
+Django==1.5.5
+django_dajax
+jsonpickle
+South
