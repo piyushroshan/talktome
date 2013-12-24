@@ -1,4 +1,4 @@
-Django==1.5.5
+Django==1.4.10
 django_dajax
 jsonpickle
 South
