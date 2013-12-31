@@ -17,7 +17,7 @@ admin.autodiscover()
 # These urls are mapping to different views in views.py file.
 urlpatterns = patterns('',
 	 # Home page of talktome
-	
+	(r'^questionnaire/',include('questionnaire.urls')),
 	# Serve static content. This line is important to serve the static content i.e the css,javascript files.
 
    
