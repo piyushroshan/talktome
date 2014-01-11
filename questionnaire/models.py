@@ -26,13 +26,15 @@ class Ques(models.Model):
 	ques_type = models.CharField(max_length = 255)
 	answer = models.PositiveSmallIntegerField(max_length = 1)
 	score = models.PositiveSmallIntegerField(max_length = 1)
+	ques_bank = models.ForeignKey(QuestionBank)
+	subject = models.ForeignKey(Subject)
 	def __unicode__(self):
-		return u'%s %d %d %s' % (self.ques_type, self.answer, self.score, self.content)
+		return u'%s %d %d %s %s %s' % (self.ques_type, self.answer, self.score, self.ques_bank, self.subject,  self.content)
 
 class Option(models.Model): 
 	content = models.TextField()
 	index = models.PositiveSmallIntegerField(max_length = 1)
-	ques_id = models.ForeignKey(Ques)
+	question = models.ForeignKey(Ques)
 	def __unicode__(self):
 		return u'%s %d %s' % (self.
 			ques_id, self.index, self.content)
@@ -41,17 +43,6 @@ class Response(models.Model):
 	user = models.ForeignKey(UserProfile)
 	response = models.PositiveSmallIntegerField(max_length = 1)
 	score = models.PositiveSmallIntegerField(max_length = 1)
-	ques_id = models.ForeignKey('Ques') 
+	question = models.ForeignKey('Ques') 
 	def __unicode__(self):
 		return u'%s %s %d %d' % (self.user, self.ques_id, self.response, self.score)
-
-class Sub_qb_ques(models.Model):
-	sub_id = models.ForeignKey(Subject)
-	qb_id=models.ForeignKey(QuestionBank)
-	ques_id=models.ForeignKey(Ques)
-	def __unicode__(self):
-		return u'%s %s %s' % (self.sub_id, self.qb_id, self.ques_id)
-
-class Ques_opt(models.Model):
-	ques_id=models.ForeignKey(Ques)
-	opt_id=models.ForeignKey(Option)
