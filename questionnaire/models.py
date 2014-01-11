@@ -49,6 +49,8 @@ class Sub_qb_ques(models.Model):
 	sub_id = models.ForeignKey(Subject)
 	qb_id=models.ForeignKey(QuestionBank)
 	ques_id=models.ForeignKey(Ques)
+	def __unicode__(self):
+		return u'%s %s %s' % (self.sub_id, self.qb_id, self.ques_id)
 
 class Ques_opt(models.Model):
 	ques_id=models.ForeignKey(Ques)

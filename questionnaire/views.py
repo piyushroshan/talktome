@@ -1,5 +1,8 @@
 # Create your views here.
-from django.http import HttpResponse
+from django.shortcuts import render
+from questionnaire.models import Subject
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the questionnaire index page.")
+	subject_list = Subject.objects.all()
+	context ={'subject_list' : subject_list}
+	return render(request, 'questionnaire/index.html' , context)
