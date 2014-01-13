@@ -37,7 +37,7 @@ class Option(models.Model):
 	question = models.ForeignKey(Ques)
 	def __unicode__(self):
 		return u'%s %d %s' % (self.
-			ques_id, self.index, self.content)
+			question, self.index, self.content)
 
 class Response(models.Model):
 	user = models.ForeignKey(UserProfile)

@@ -1,0 +1,9 @@
+<h1>{{ subject_name }} Questions</h1>
+{% for ques in ques_list %}
+	<h2>Q{{ques.id}} {{ques.content}}</h2>
+	<ol><h3>
+		{% for opt in opt_list %}
+		<input type="radio" name="{{ques.id}}" value="{{opt.id}}">{{opt.content}}</input>
+		{% endfor %}
+	</h3></ol>
+{% endfor %}
