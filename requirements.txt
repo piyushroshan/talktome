@@ -1,5 +1,5 @@
 Django==1.4.10
-django_dajax
-jsonpickle
-South
+django-dajax==0.9.2
+jsonpickle==0.6.1
+South==0.8.4
 django-grappelli==2.4.8
