@@ -1,9 +1,22 @@
+<html>
+<body>
+	<script>
+	function evaluate()
+	{
+		var val=$('input:radio:checked')
+	}
+	</script>
 <h1>{{ subject_name }} Questions</h1>
+<form>
 {% for ques in ques_list %}
 	<h2>Q{{ques.id}} {{ques.content}}</h2>
-	<ol><h3>
+	<ol>
 		{% for opt in opt_list %}
-		<input type="radio" name="{{ques.id}}" value="{{opt.id}}">{{opt.content}}</input>
+		<h3><input type="radio" name="{{ques.id}}" value="{{opt.id}}">{{opt.content}}</input></h3>
 		{% endfor %}
-	</h3></ol>
+	</ol>
 {% endfor %}
+&nbsp&nbsp&nbsp&nbsp&nbsp<input type="submit" value="Submit" onclick="evaluate()">
+</form>
+</body>
+</html>
