@@ -21,10 +21,12 @@ def response_user(request,question,option,ques_bank):
     ques_bank = QuestionBank.objects.get(pk=ques_bank)
     answer = Answer.objects.get(ques=ques)
     response = Response.objects.create(question=question, response=option, user=user)
+    response.save()
     try:
         user_score = UserScore.objects.get(user=user, ques_bank=ques_bank)
     except (UserScore.DoesNotExist):
         user_score = UserResponse(user=user, ques_bank=ques_bank, score=0)
     if answer.option == option:
-        score = score + question.score
+        user_score.score = user_score.score + question.score
+    user_score.save()
     return dajax.json()

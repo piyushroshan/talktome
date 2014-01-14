@@ -28,7 +28,7 @@ class Ques(models.Model):
 	ques_bank = models.ForeignKey(QuestionBank)
 	subject = models.ForeignKey(Subject)
 	def __unicode__(self):
-		return u'%s %d %d %s %s %s' % (self.ques_type, self.answer, self.score, self.ques_bank, self.subject,  self.content)
+		return u'%s %d %d %s %s %s' % (self.ques_type, self.score, self.ques_bank, self.subject,  self.content)
 
 class Option(models.Model): 
 	content = models.TextField()
@@ -46,7 +46,7 @@ class Response(models.Model):
 	response = models.ForeignKey(Option) 
 	question = models.ForeignKey(Ques) 
 	def __unicode__(self):
-		return u'%s %s %d %d' % (self.user, self.question, self.response, self.score)
+		return u'%s %s %d %d' % (self.user, self.question, self.response)
 
 class UserScore(models.Model):
 	user = models.ForeignKey(User)
