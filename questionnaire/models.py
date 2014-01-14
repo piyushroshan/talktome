@@ -24,7 +24,6 @@ class QuestionBank(models.Model):
 class Ques(models.Model):
 	content = models.TextField()
 	ques_type = models.CharField(max_length = 255)
-	answer = models.PositiveSmallIntegerField(max_length = 1)
 	score = models.PositiveSmallIntegerField(max_length = 1)
 	ques_bank = models.ForeignKey(QuestionBank)
 	subject = models.ForeignKey(Subject)
@@ -33,16 +32,23 @@ class Ques(models.Model):
 
 class Option(models.Model): 
 	content = models.TextField()
-	index = models.PositiveSmallIntegerField(max_length = 1)
 	question = models.ForeignKey(Ques)
 	def __unicode__(self):
 		return u'%s %d %s' % (self.
 			question, self.index, self.content)
 
+class Answer(models.Model):
+	ques=models.ForeignKey(Ques)
+	option=models.ForeignKey(Option)
+
 class Response(models.Model):
-	user = models.ForeignKey(UserProfile)
-	response = models.PositiveSmallIntegerField(max_length = 1)
-	score = models.PositiveSmallIntegerField(max_length = 1)
-	question = models.ForeignKey('Ques') 
+	user = models.ForeignKey(User)
+	response = models.ForeignKey(Option) 
+	question = models.ForeignKey(Ques) 
 	def __unicode__(self):
-		return u'%s %s %d %d' % (self.user, self.ques_id, self.response, self.score)
+		return u'%s %s %d %d' % (self.user, self.question, self.response, self.score)
+
+class UserScore(models.Model):
+	user = models.ForeignKey(User)
+	ques_bank = models.ForeignKey(QuestionBank)
+	score = models.PositiveSmallIntegerField()

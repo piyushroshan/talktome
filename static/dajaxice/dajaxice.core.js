@@ -7,11 +7,10 @@ var Dajaxice = {
     
 
     
-    dashboard: {
+    questionnaire: {
     
-    
-    book_event: function(callback_function, argv, custom_settings){
-        return Dajaxice.call('dashboard.book_event', 'POST', callback_function, argv, custom_settings);
+    response_user: function(callback_function, argv, custom_settings){
+        return Dajaxice.call('questionnaire.response_user', 'POST', callback_function, argv, custom_settings);
     },
     }
     
