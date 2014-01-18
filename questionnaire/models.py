@@ -38,7 +38,7 @@ class Option(models.Model):
 			question, self.content)
 
 class Answer(models.Model):
-	ques=models.ForeignKey(Ques)
+	question=models.ForeignKey(Ques)
 	option=models.ForeignKey(Option)
 
 class Response(models.Model):
@@ -46,7 +46,7 @@ class Response(models.Model):
 	response = models.ForeignKey(Option) 
 	question = models.ForeignKey(Ques) 
 	def __unicode__(self):
-		return u'%s %s %d %d' % (self.user, self.question, self.response)
+		return u'%s %s %s' % (self.user, self.question, self.response)
 
 class UserScore(models.Model):
 	user = models.ForeignKey(User)

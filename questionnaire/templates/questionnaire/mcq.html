@@ -1,15 +1,34 @@
-<html>
+<!DOCTYPE html>
+{% load dajaxice_templatetags %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Talk Test</title>
+        <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+     {% dajaxice_js_import %}
+     <script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
+     <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+    <script type="text/javascript">
+		function response(){
+  			Dajaxice.questionnaire.response_user(Dajax.process, {'question':{{ question.id }},'option':$('input[name= {{ question.id }}]:checked', '#question_form').val() });	return false;
+		}
+	</script>
+  </head>
 <body>
 <h1>{{ subject_name }} Questions</h1>
-<form>
+<form id="question_form" method="POST">
+	{% csrf_token %}
 	<div id="question-content">
-	<h2>Q</h2><h2 class="questionid">{{ques_list.0.id}}</h2><h2> {{ques_list.0.content}}</h2>
+	<h2>Q<span class="questionid">{{ question.id }}</span>.<span class=questioncontent> {{ question.content }} </span></h2>
 	<ol>
 		{% for opt in opt_list %}
-		<h3><input type="radio" name="{{ques.id}}" value="{{opt.id}}">{{opt.content}}</input></h3>
+		<h3><input type="radio" name="{{ question.id }}" value="{{opt.id}}">{{ opt.content }}</input></h3>
 		{% endfor %}
 	</ol>
-	&nbsp&nbsp&nbsp&nbsp&nbsp<input type="submit" value="Submit" onclick="Dajaxice.questionnaire.updateprofile(Dajax.process, {'question':$('#window').contents().find('h2.question')[0].innerHTML,'option':$('input:radio:checked')})">
+	<input type="button" style="margin-left:50px;" value="Submit" onclick="response();">
 </div>
 </form>
 </body>
