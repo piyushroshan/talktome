@@ -8,10 +8,13 @@ def index(request):
 	return render(request, 'questionnaire/index.html' , context)
 
 def mcq(request,subject_id):
-	subject=Subject.objects.get(pk=subject_id)
-	ques=Ques.objects.filter(subject__id=subject_id,ques_bank__name='QBU1')
+	subject = Subject.objects.get(pk=subject_id)
+	#ques_bank = QuestionBank.objects.filter(subject__id=subject_id)
+	#slogan = Slogan.objects.order_by('?')[0].slogan
+	ques = Ques.objects.filter(subject__id=subject_id,ques_bank__name='QBU1')
+	qb="QBU1"
 	for ques_l in ques:
-		option=Option.objects.filter(question__id=ques_l.id)
-	context={'subject_name':subject.name,'ques_list':ques,'opt_list':option}
+		option = Option.objects.filter(question__id=ques_l.id)
+	context = {'subject_name':subject.name,'ques_list':ques,'opt_list':option,'qb':qb}
 	return render(request,'questionnaire/mcq.html',context)
 

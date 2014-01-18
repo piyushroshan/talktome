@@ -13,7 +13,7 @@ from django.template import Context
 from django.conf import settings
 
 @dajaxice_register()
-def response_user(request,question,option,ques_bank):
+def response_user(request,question,option):
     dajax = Dajax()
     user = request.user
     question = Ques.objects.get(pk=question)
