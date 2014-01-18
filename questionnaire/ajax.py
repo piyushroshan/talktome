@@ -9,6 +9,7 @@ from questionnaire.models import *
 import jsonpickle
 from django.db.models import Q
 from django.template.loader import get_template
+from django.template import RequestContext
 from django.template import Context
 from django.conf import settings
 
@@ -29,4 +30,11 @@ def response_user(request,question,option):
     if answer.option == option:
         user_score.score = user_score.score + question.score
     user_score.save()
+    ques_list = Ques.objects.filter(ques_bank=ques_bank)
+    question = ques_list[1]
+    option = Option.objects.filter(question__id=question.id)
+    context = RequestContext(request,{'question':question,'opt_list':option})
+    template = get_template('questionnaire/mcq_template.html')
+    content = template.render(context)
+    dajax.assign('#form_section', 'innerHTML',content)
     return dajax.json()
