@@ -16,5 +16,7 @@ def mcq(request,subject_id):
 	question = ques_list[0]
 	option = Option.objects.filter(question__id=question.id)
 	context = {'subject_name':subject.name,'question':question,'opt_list':option,'qb':qb}
-	return render(request,'questionnaire/mcq.html',context)
+	response=render(request,'questionnaire/mcq.html',context)
+	response.set_cookie('quesno', 0)
+	return  response
 

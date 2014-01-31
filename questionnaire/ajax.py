@@ -3,6 +3,7 @@ from dajaxice.decorators import dajaxice_register
 from django.contrib.auth.models import User
 from dajax.core import Dajax
 from datetime import datetime
+from datetime import timedelta
 from datetime import time
 from datetime import date
 from questionnaire.models import *
@@ -12,6 +13,7 @@ from django.template.loader import get_template
 from django.template import RequestContext
 from django.template import Context
 from django.conf import settings
+from django.http import HttpResponse
 
 @dajaxice_register()
 def response_user(request,question,option):
@@ -30,11 +32,22 @@ def response_user(request,question,option):
     if answer.option == option:
         user_score.score = user_score.score + question.score
     user_score.save()
-    ques_list = Ques.objects.filter(ques_bank=ques_bank)
-    question = ques_list[1]
-    option = Option.objects.filter(question__id=question.id)
-    context = RequestContext(request,{'question':question,'opt_list':option})
-    template = get_template('questionnaire/mcq_template.html')
-    content = template.render(context)
-    dajax.assign('#form_section', 'innerHTML',content)
+    quesno = int(request.COOKIES.get('quesno','0'))
+    max_age = 14*24*60*60 # two weeks
+    expires = datetime.strftime(datetime.utcnow() + timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+    if(quesno < 20):
+        print "here"
+        question = Ques.objects.get(pk=(quesno+1))
+        ques_bank = question.ques_bank
+        ques_list = Ques.objects.filter(ques_bank=ques_bank)
+        question = ques_list[quesno+1]
+        option = Option.objects.filter(question__id=question.id)
+        context = RequestContext(request,{'question':question,'opt_list':option})
+        template = get_template('questionnaire/mcq_template.html')
+        content = template.render(context)
+        #quesno = quesno + 1
+        print quesno
+        dajax.add_data({'name':'quesno', 'value':quesno+1},"setCookie")
+        print dajax.json()
+        dajax.assign('#form_section', 'innerHTML',content)
     return dajax.json()
