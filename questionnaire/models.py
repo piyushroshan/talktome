@@ -34,8 +34,7 @@ class Option(models.Model):
 	content = models.TextField()
 	question = models.ForeignKey(Ques)
 	def __unicode__(self):
-		return u'%s %s' % (self.
-			question, self.content)
+		return u'%s' % (self.content)
 
 class Answer(models.Model):
 	question=models.ForeignKey(Ques)

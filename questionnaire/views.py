@@ -1,6 +1,7 @@
 # Create your views here.
 from django.shortcuts import render
 from questionnaire.models import *
+from django.shortcuts import render_to_response
 
 def index(request):
 	subject_list = Subject.objects.all()
@@ -19,4 +20,9 @@ def mcq(request,subject_id):
 	response=render(request,'questionnaire/mcq.html',context)
 	response.set_cookie('quesno', 0)
 	return  response
+
+def indexx(request):
+	return render_to_response('questionnaire/indexx.html')
+
+
 

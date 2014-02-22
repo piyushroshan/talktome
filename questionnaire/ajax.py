@@ -14,6 +14,7 @@ from django.template import RequestContext
 from django.template import Context
 from django.conf import settings
 from django.http import HttpResponse
+from django.core import serializers
 
 @dajaxice_register()
 def response_user(request,question,option):
@@ -41,13 +42,21 @@ def response_user(request,question,option):
         ques_bank = question.ques_bank
         ques_list = Ques.objects.filter(ques_bank=ques_bank)
         question = ques_list[quesno+1]
+        print question
         option = Option.objects.filter(question__id=question.id)
         context = RequestContext(request,{'question':question,'opt_list':option})
         template = get_template('questionnaire/mcq_template.html')
         content = template.render(context)
+        #data = serializers.serialize('json', [question ,], fields=('content'))
+        #data = simplejson.dumps( [{'content': question.content}] )
+        #print data.content
         #quesno = quesno + 1
+        data=jsonpickle.encode({'content':question.content},unpicklable=False)
+        data2=jsonpickle.encode([{'option':o.content} for o in option],unpicklable=False)
+        print data2
         print quesno
         dajax.add_data({'name':'quesno', 'value':quesno+1},"setCookie")
+        dajax.add_data({},"start")
         print dajax.json()
         dajax.assign('#form_section', 'innerHTML',content)
     return dajax.json()

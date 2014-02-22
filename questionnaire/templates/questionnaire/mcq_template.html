@@ -1,12 +1,12 @@
-<form id="question_form" method="POST">
+<form name="question_form" id="question_form" method="POST">
 	{% csrf_token %}
-	<div id="question-content">
-		<h2>Q<span class="questionid">{{ question.id }}</span>.<span class=questioncontent> {{ question.content }} </span></h2>
-		<ol>
+	<div id="question-content" >
+		<h2>Q<span class="questionid">{{ question.id }}</span>.<span class="questioncontent"> {{ question.content }} </span></h2>
+		<ol class="options">
 			{% for opt in opt_list %}
-			<h3><input type="radio" name="{{ question.id }}" value="{{opt.id}}">{{ opt.content }}</input></h3>
+			<h3><input type="radio" id ="{{opt.id}}" name="{{question.id}}" value="{{opt.content}}" >{{ opt.content }}</input></h3>
 			{% endfor %}
 		</ol>
-		<input type="button" style="margin-left:50px;" value="Submit" onclick=" Dajaxice.questionnaire.response_user(Dajax.process, {'question':{{ question.id }},'option':$('input[name= {{ question.id }}]:checked', '#question_form').val() });	return false; ">
+		<input type="button" style="margin-left:50px;" value="Submit" onclick=" Dajaxice.questionnaire.response_user(Dajax.process, {'question':{{ question.id }},'option':$('input[name= {{ question.id }}]:checked', '#question_form').attr('id') });	return false; ">
 	</div>
 </form>

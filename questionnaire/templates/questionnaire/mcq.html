@@ -11,7 +11,13 @@
      {% dajaxice_js_import %}
      <script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
      <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
-    <script type="text/javascript">
+     <script type="text/javascript" src="/static/js/mespeak/mespeak.js"></script>
+     <script type="text/javascript" src="/static/js/annyang.min.js"></script>
+  	 <script type="text/javascript ">
+     	meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
+    	meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
+     </script>
+     <script type="text/javascript">
 		function setCookie(data,days){
 		    if (days) {
 		        var date = new Date();
@@ -21,23 +27,70 @@
 		    else var expires = "";
 		    document.cookie = data.name+"="+data.value+expires+"; path=/";
 		}
-	</script>
+	 </script>
+	 <script type="text/javascript">
+ 		function readQues(x) {
+		//var x={{question.id}}
+		//var y="{{question.content}}"
+     
+  			  meSpeak.speak(JSON.parse(x).content);
+  			//meSpeak.speak(JSON.parse(y).option);
+  			//setTimeout(function() { meSpeak.speak(y);}, 1000);	
+			}
+        
+       function readOption(x){
+       	setTimeout(function() { meSpeak.speak(x);}, 2000);
+       }
+	 </script>
+	 <script type="text/javascript">
+	 	function start(){
+        var count=1;
+        var read = new Array();
+        var qid = $(".questionid").text();
+        var qcontent = $(".questioncontent").text();
+        read.push({"text":"Question"});
+        read.push({"text":qcontent});
+        var z = $('ol h3 input[type=radio]').each(function(){
+          read.push({"text":"option"});
+          read.push({"text":count});
+          read.push({"text":this.value});
+          read.push ({"text":"\n"});
+          count++;
+        });
+        console.log(read);
+        meSpeak.speakMultipart(read);
+
+
+		    //var z = JSON.parse('{{ opt_list.content }}');
+		  //  alert(y)
+		    //meSpeak.speak(y)
+        }
+        window.onload = start;
+     </script>
+     <!-- Speech recognition !-->
+	 <script>
+		if (annyang) {
+  		// Let's define a command.
+  			var commands = {
+    			'apple': function() { $('ol h3 input[type=radio]').eq(0).attr('checked',true); },
+    			'boy': function() { $('ol h3 input[type=radio]').eq(1).attr('checked',true); },
+    			'cat': function() { $('ol h3 input[type=radio]').eq(2).attr('checked',true); },
+    			'dog': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); },
+    			'elephant': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); },
+  			};
+
+  		// Add our commands to annyang
+  		annyang.addCommands(commands);
+
+  		// Start listening.
+  		annyang.start();
+		}
+	 </script>
   </head>
 <body>
 <h1>{{ subject_name }} Questions</h1>
 <div id="form_section">
-	<form id="question_form" method="POST">
-		{% csrf_token %}
-		<div id="question-content">
-			<h2>Q<span class="questionid">{{ question.id }}</span>.<span class=questioncontent> {{ question.content }} </span></h2>
-			<ol>
-				{% for opt in opt_list %}
-				<h3><input type="radio" name="{{ question.id }}" value="{{opt.id}}">{{ opt.content }}</input></h3>
-				{% endfor %}
-			</ol>
-			<input type="button" style="margin-left:50px;" value="Submit" onclick=" Dajaxice.questionnaire.response_user(Dajax.process, {'question':{{ question.id }},'option':$('input[name= {{ question.id }}]:checked', '#question_form').val() });	return false; ">
-		</div>
-	</form>
+	{% include "questionnaire/mcq_template.html" %}
 </div>
 </body>
 </html>
