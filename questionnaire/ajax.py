@@ -51,12 +51,9 @@ def response_user(request,question,option):
         #data = simplejson.dumps( [{'content': question.content}] )
         #print data.content
         #quesno = quesno + 1
-        data=jsonpickle.encode({'content':question.content},unpicklable=False)
-        data2=jsonpickle.encode([{'option':o.content} for o in option],unpicklable=False)
-        print data2
         print quesno
         dajax.add_data({'name':'quesno', 'value':quesno+1},"setCookie")
-        dajax.add_data({},"start")
         print dajax.json()
         dajax.assign('#form_section', 'innerHTML',content)
+        print content
     return dajax.json()

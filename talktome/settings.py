@@ -15,6 +15,11 @@ MANAGERS = ADMINS
 
 SITE_ROOT = path.dirname(path.dirname(path.realpath(__file__)))
 
+ACCOUNT_ACTIVATION_DAYS = 2
+EMAIL_HOST = 'localhost'
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+LOGIN_REDIRECT_URL = '/'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -147,6 +152,7 @@ INSTALLED_APPS = (
     'grappelli',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'registration',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'questionnaire',

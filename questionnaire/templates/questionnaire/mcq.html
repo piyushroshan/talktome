@@ -43,7 +43,7 @@
        }
 	 </script>
 	 <script type="text/javascript">
-	 	function start(){
+	 	function speakQues(){
         var count=1;
         var read = new Array();
         var qid = $(".questionid").text();
@@ -65,18 +65,52 @@
 		  //  alert(y)
 		    //meSpeak.speak(y)
         }
-        window.onload = start;
+        window.onload = speakQues;
      </script>
      <!-- Speech recognition !-->
 	 <script>
+
+
+   function speakOption(option){
+        var count=1;
+        var read = new Array();
+        read.push({"text" : "You have selected"});
+        read.push({"text" : "\n"});
+        var z = $('ol h3 input[type=radio]').each(function(){
+          if (count == option){
+            read.push({"text":"option"});
+            read.push({"text":count});
+            read.push({"text":this.value});
+            read.push ({"text":"\n"});
+          }
+          count++;
+        });
+        read.push({"text" : "Say OK to submit your answer"});
+        console.log(read);
+        meSpeak.speakMultipart(read);
+   }
+
+     function submitAnswer(){
+        var qid = $(".questionid").text();
+        option = $('input[name='+qid+']:checked', '#question_form').attr('id');
+        console.log("Question: "+qid+"\nAnswer: "+option) ;
+        Dajaxice.questionnaire.response_user(submitAnswerCallback, {'question':qid,'option': option });
+     }
+
+     function submitAnswerCallback(data){
+         
+        speakQues();
+     }
+
 		if (annyang) {
   		// Let's define a command.
   			var commands = {
-    			'apple': function() { $('ol h3 input[type=radio]').eq(0).attr('checked',true); },
-    			'boy': function() { $('ol h3 input[type=radio]').eq(1).attr('checked',true); },
-    			'cat': function() { $('ol h3 input[type=radio]').eq(2).attr('checked',true); },
-    			'dog': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); },
-    			'elephant': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); },
+    			'apple': function() { $('ol h3 input[type=radio]').eq(0).attr('checked',true); speakOption(1); },
+    			'boy': function() { $('ol h3 input[type=radio]').eq(1).attr('checked',true); speakOption(2); },
+    			'cat': function() { $('ol h3 input[type=radio]').eq(2).attr('checked',true); speakOption(3); },
+    			'dog': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); speakOption(4); },
+    			'elephant': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); speakOption(5); },
+          'ok': function() { submitAnswer(); },
   			};
 
   		// Add our commands to annyang

@@ -2,12 +2,15 @@
 from django.shortcuts import render
 from questionnaire.models import *
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def index(request):
 	subject_list = Subject.objects.all()
 	context ={'subject_list' : subject_list}
 	return render(request, 'questionnaire/index.html' , context)
 
+@login_required
 def mcq(request,subject_id):
 	subject = Subject.objects.get(pk=subject_id)
 	#ques_bank = QuestionBank.objects.filter(subject__id=subject_id)
