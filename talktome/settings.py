@@ -149,6 +149,8 @@ INSTALLED_APPS = (
     'dajaxice',
     'dajax',
     'south',
+    'django_admin_bootstrapped.bootstrap3',
+    'django_admin_bootstrapped',
     'grappelli',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
