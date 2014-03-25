@@ -134,8 +134,8 @@ TEMPLATE_DIRS = (
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'xxxxxx@gmail.com'
-EMAIL_HOST_PASSWORD = 'xxxxxx'
+EMAIL_HOST_USER = 'talktome.ar@gmail.com'
+EMAIL_HOST_PASSWORD = 'anushree123'
 EMAIL_PORT = 587
 
 INSTALLED_APPS = (
@@ -149,6 +149,7 @@ INSTALLED_APPS = (
     'dajaxice',
     'dajax',
     'south',
+    'bootstrap3',
     'django_admin_bootstrapped.bootstrap3',
     'django_admin_bootstrapped',
     'grappelli',

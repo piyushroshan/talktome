@@ -1,31 +1,67 @@
 {% load i18n %}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <link rel="stylesheet" href="/style.css" />
-    <title>{% block title %}User test{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+        <meta name="generator" content="Bootply" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+           }
+
+      footer {
+        display: block;
+        margin-left: 30px;
+        position:fixed;
+        bottom:0px;
+             } 
+     .btn-block {
+        display: block;
+        width: 70%;
+        padding-right: 0;
+        padding-left: 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+    </style>
 </head>
 
 <body>
     <div id="header">
-        {% block header %}
-	<a href="{% url index %}">{% trans "Home" %}</a> | 
-
-	{% if user.is_authenticated %}
-	{% trans "Logged in" %}: {{ user.username }} 
-	(<a href="{% url auth_logout %}">{% trans "Log out" %}</a> | 
-	<a href="{% url auth_password_change %}">{% trans "Change password" %}</a>)
-	{% else %}
-	<a href="{% url auth_login %}">{% trans "Log in" %}</a>
-	{% endif %}
-	<hr />
+            {% block header %}
+            <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">talktome</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
         {% endblock %}
     </div>
 
-    <div id="content">
-        {% block content %}{% endblock %}
+    <div id="container">
+        {% block main %}{% endblock %}
     </div>
 
     <div id="footer">
@@ -33,6 +69,13 @@
         <hr />
         {% endblock %}
     </div>
+    <script type='text/javascript' src="/static/jquery/jquery-1.11.0.js"></script>
+    <script type='text/javascript' src="/static/js/bootstrap.js"></script>  
+    <script type='text/javascript'>
+    $(document).ready(function() {
+    });
+        
+     </script>
 </body>
 
 </html>
