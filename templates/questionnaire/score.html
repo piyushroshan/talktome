@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load dajaxice_templatetags %}
+{% block title %}Subjects{% endblock %}
+{% dajaxice_js_import %}
+{% load bootstrap3 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block main %}
+<h1>Your score is {{ user_score }} </h1>
+{% endblock %}

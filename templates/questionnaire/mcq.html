@@ -1,6 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
 {% load dajaxice_templatetags %}
-<html>
-<head>
+{% block title %}Subjects{% endblock %}
+{% dajaxice_js_import %}
+{% load bootstrap3 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block main %}
     <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -14,19 +24,25 @@
      	meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
     	meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
      </script>
+<div class="container">
+<h1>{{ subject_name }} Questions</h1>
+<div id="form_section">
+	{% include "questionnaire/mcq_template.html" %}
+</div>
+</div>
      <script type="text/javascript">
-		function setCookie(data,days){
-		    if (days) {
-		        var date = new Date();
-		        date.setTime(date.getTime()+(days*24*60*60*1000));
-		        var expires = "; expires="+date.toGMTString();
-		    }
-		    else var expires = "";
-		    document.cookie = data.name+"="+data.value+expires+"; path=/";
-		}
-	 </script>
-	 <script type="text/javascript">
-	 	function speakQues(){
+    function setCookie(data,days){
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = data.name+"="+data.value+expires+"; path=/";
+    }
+   </script>
+   <script type="text/javascript">
+    function speakQues(){
         var count=1;
         var read = new Array();
         var qid = $(".questionid").text();
@@ -44,14 +60,14 @@
         meSpeak.speakMultipart(read);
 
 
-		    //var z = JSON.parse('{{ opt_list.content }}');
-		  //  alert(y)
-		    //meSpeak.speak(y)
+        //var z = JSON.parse('{{ opt_list.content }}');
+      //  alert(y)
+        //meSpeak.speak(y)
         }
         window.onload = speakQues;
      </script>
      <!-- Speech recognition !-->
-	 <script>
+   <script>
 
 
    function speakOption(option){
@@ -86,28 +102,22 @@
         speakQues();
      }
 
-		if (annyang) {
-  		// Let's define a command.
-  			var commands = {
-    			'apple': function() { $('ol h3 input[type=radio]').eq(0).attr('checked',true); speakOption(1); },
-    			'boy': function() { $('ol h3 input[type=radio]').eq(1).attr('checked',true); speakOption(2); },
-    			'cat': function() { $('ol h3 input[type=radio]').eq(2).attr('checked',true); speakOption(3); },
-    			'dog': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); speakOption(4); },
-    			'elephant': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); speakOption(5); },
+    if (annyang) {
+      // Let's define a command.
+        var commands = {
+          'one': function() { $('ol h3 input[type=radio]').eq(0).attr('checked',true); speakOption(1); },
+          'two': function() { $('ol h3 input[type=radio]').eq(1).attr('checked',true); speakOption(2); },
+          'three': function() { $('ol h3 input[type=radio]').eq(2).attr('checked',true); speakOption(3); },
+          'four': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); speakOption(4); },
+          'five': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); speakOption(5); },
           'ok': function() { submitAnswer(); },
-  			};
+        };
 
-  		// Add our commands to annyang
-  		annyang.addCommands(commands);
+      // Add our commands to annyang
+      annyang.addCommands(commands);
 
-  		// Start listening.
-  		annyang.start();
-		}
-	 </script>
-  </head>
-  <body>
-    <h1>{{ subject_name }} Questions</h1>
-<div id="form_section">
-	{% include "questionnaire/mcq_template.html" %}
-</div>
-</body>
+      // Start listening.
+      annyang.start();
+    }
+   </script>
+{% endblock %}

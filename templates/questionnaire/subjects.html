@@ -12,8 +12,21 @@
      	meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
     	meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
      </script>
-     <script type="text/javascript">
-	 	function speakSubjects(){
+
+<div class="container">
+{% if subject_list %}
+<h3>Choose the subject
+    <ol>
+    {% for subject in subject_list %}
+        <hr><li><a href="/questionnaire/{{ subject.id }}/" id = "{{subject.name}}">{{ subject.name}}</a></li></hr>
+    {% endfor %}
+    </ol></h3>
+{% else %}
+    <p>No subjects are available.</p>
+{% endif %}
+</div>
+<script type="text/javascript">
+        function speakSubjects(){
         var count=1;
         var read = new Array();
         read.push({"text":"Choose a subject "});
@@ -28,23 +41,34 @@
         meSpeak.speakMultipart(read);
 
 
-		    //var z = JSON.parse('{{ opt_list.content }}');
-		  //  alert(y)
-		    //meSpeak.speak(y)
+            //var z = JSON.parse('{{ opt_list.content }}');
+          //  alert(y)
+            //meSpeak.speak(y)
         }
         window.onload = speakSubjects;
      </script>
+     <script>
+     function selectOption(data){
+        /*var read = new Array();
+        read.push({"text":"you have selected"});
+        read.push({"text":document.getElementById(data).text});
+        console.log(read);
+        meSpeak.speakMultipart(read);*/
+        document.getElementById(data).click();
+     }
+     if (annyang) {
+      // Let's define a command.
+        var commands = {
+          'Unix': function() { selectOption("Unix"); },
+          'Maths': function() { selectOption("Maths"); },
+          'General knowledge': function() { selectOption("General knowledge"); },
+        };
 
-<div class="container">
-{% if subject_list %}
-<h3>Choose the subject
-    <ol>
-    {% for subject in subject_list %}
-        <hr><li><a href="/questionnaire/{{ subject.id }}/">{{ subject.name}}</a></li></hr>
-    {% endfor %}
-    </ol></h3>
-{% else %}
-    <p>No subjects are available.</p>
-{% endif %}
-</div>
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start();
+    }
+   </script>
 {% endblock %}

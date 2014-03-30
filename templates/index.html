@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block title %}Home{% endblock %}
- 
-{% block main %}
-      
+{% block main %}     
       <!-- Main hero unit for a primary marketing message or call to action -->
       <div class="jumbotron">
       	<div class="container">
@@ -25,14 +23,73 @@
         <div class="col-md-4">
         </div>
         <div class="col-md-4">
-          
-          <p><a href="{% url auth_login %}" class="btn btn-custom btn-lg" role="button">Login / Register</button></a>  
+          {% if user.is_authenticated %}
+          <p><a href="/questionnaire/subjects" id="1" class="btn btn-custom btn-lg" role="button">Take Test</a></p>
+          <hr>
+          <p><a class="btn btn-custom btn-lg" id="2" role="button">Online Study</a></p>
+        </hr>
+        {% else %}
+          <p><a href="{% url auth_login %}" id="1"  class="btn btn-custom btn-lg" role="button">Login/Register</button></a><p>
           	<hr>
-                  <a href="/guest/"><a  class="btn btn-default btn-lg" role="button">Guest Area</button></a> </p>
+            <p><a href="/guest/" id="2" class="btn btn-default btn-lg" role="button">Guest Area</button></a> </p>
 				</hr>
-				  
+				{% endif %}  
     </div>
       </div>
 </div>
+ <script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
+     <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+     <script type="text/javascript" src="/static/js/mespeak/mespeak.js"></script>
+     <script type="text/javascript" src="/static/js/annyang.min.js"></script>
+     <script type="text/javascript ">
+      meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
+      meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
+     </script>
+     <script type="text/javascript">
+    function speakOptions(){
+        var count=1;
+        var read = new Array();
+        read.push({"text":"Welcome to talk to me."});
+        read.push({"text":"Please select an option."});
+        var z = $('p a').each(function(){
+        read.push({"text":"Speak"});
+        read.push({"text":this.text});
+        read.push ({"text":"\n"});
+      });
+        console.log(read);
+        meSpeak.speakMultipart(read);
+
+
+        //var z = JSON.parse('{{ opt_list.content }}');
+      //  alert(y)
+        //meSpeak.speak(y)
+        }
+        window.onload = speakOptions;
+     </script> 
+     <script>
+     function selectOption(data){
+        /*var read = new Array();
+        read.push({"text":"you have selected"});
+        read.push({"text":document.getElementById(data).text});
+        console.log(read);
+        meSpeak.speakMultipart(read);*/
+        document.getElementById(data).click();
+     }
+     if (annyang) {
+      // Let's define a command.
+        var commands = {
+          'Take test': function() { selectOption(1); },
+          'Online study': function() { selectOption(2); },
+          'Login': function() { selectOption(1); },
+          'Guest area': function() { submitOption(2); },
+        };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start();
+    }
+   </script>
 
 {% endblock %}

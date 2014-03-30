@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.conf.urls.defaults import patterns, include
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config 
 from django.conf import settings
+from talktome.views import *
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from django.views.generic.simple import direct_to_template
@@ -24,6 +25,7 @@ urlpatterns = patterns('',
 	(r'^accounts/', include('registration.urls')),
 	(r'^$', direct_to_template, 
             { 'template': 'index.html' }, 'index'), 
+	(r'^logout/$', logout_page),
 	
 	#This mapping is important for incorporating Django's Admin module in our project. If removed Admin module won't work.
 	(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
