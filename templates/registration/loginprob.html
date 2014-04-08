@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n %}
+<script>
+window.onload = function() {
+  var msg = new SpeechSynthesisUtterance('Hello World');
+window.speechSynthesis.speak(msg);
+};
+</script>
+{% block main %}
+<div class="container">
+	{%if not user.is_authenticated %}
+<legend> Log In </legend>
+{% if form.errors %}
+<p class="errors">Please correct the errors below:</p>
+<p>{{ form.non_field_errors }}</p>
+{% endif %}
+
+<form class="form-horizontal" method="post" action="?next={{ next|default:"/questionnaire/" }}"> {%csrf_token%}
+<fieldset>
+<input type="text" x-webkit-speech>
+<!-- Text input-->
+<div class="form-group" id-"username">
+  <label class="col-md-4 control-label" for="id_username">Username</label>
+  <div class="col-md-4" id-"username" >{{ form.username }}
+		{% if form.username.errors %}<span class="errors">{{ form.username.errors|join:", " }}</span>{% endif %}
+    
+  </div>
+</div>
+
+<!-- Password input-->
+<div class="form-group">
+  <label class="col-md-4 control-label" for="id_password">Password</label>
+  <div class="col-md-4">
+   <span class="box"> {{ form.password }}</span>
+
+		{% if form.password.errors %} <span class="errors">{{ form.password.errors|join:", " }}</span>   {% endif %}
+    
+  </div>
+</div>
+
+<!-- Button -->
+<div class="form-group">
+  <div class="col-md-4">
+    <button type="submit" class="btn btn-primary">Log In</button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+{%else%}
+<p>You are already logged in</p>
+{%endif%}
+<p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
+<p>{% trans "Not member" %}? <a href="{% url registration_register %}">{% trans "Register" %}</a>!</p>
+</div>
+{% endblock %}

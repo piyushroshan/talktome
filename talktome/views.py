@@ -1,14 +1,15 @@
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from questionnaire.models import *
 from django.contrib.auth.forms import UserCreationForm 
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required 
 from django.db.models import Q
-from datetime import datetime
-from django.core.validators import email_re
+from django.http import *
+from django.shortcuts import render
+from questionnaire.models import *
+from django.shortcuts import render_to_response,redirect
 
 #========================================================================================================================================================================================================== 
  
@@ -77,3 +78,22 @@ def register(request):
 		return render_to_response('registration/registration.html', {
 			'form': form,
 			},context_instance=RequestContext(request))
+
+def login_user(request):
+	logout(request)
+	username = password = ''
+	if request.POST:
+		username = request.POST['username']
+		print username
+		username.replace(" ", "")
+		password = request.POST['password']
+		print "passsword is"
+		print password
+		password.replace(" ", "")
+		print password
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect('/')
+	return render_to_response('registration/login.html', context_instance=RequestContext(request)) 

@@ -26,7 +26,7 @@ urlpatterns = patterns('',
 	(r'^$', direct_to_template, 
             { 'template': 'index.html' }, 'index'), 
 	(r'^logout/$', logout_page),
-	
+	(r'^login/$', login_user),
 	#This mapping is important for incorporating Django's Admin module in our project. If removed Admin module won't work.
 	(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
     (r'^admin/', include(admin.site.urls)),

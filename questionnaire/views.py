@@ -1,8 +1,12 @@
 # Create your views here.
+from django.http import *
 from django.shortcuts import render
 from questionnaire.models import *
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 
 @login_required
 def subjects(request):
@@ -27,5 +31,7 @@ def mcq(request,subject_id):
 def index(request):
 	return render_to_response('questionnaire/index.html')
 
+def speech(request):
+	return render_to_response('questionnaire/speech.html')
 
 

@@ -11,7 +11,7 @@ class UserProfile(models.Model):
 
 class Subject(models.Model):
 	name = models.CharField(max_length = 255)
-	desc = models.TextField()
+	desc = models.TextField(blank=True)
 	def __unicode__(self):
 		return self.name
 

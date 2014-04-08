@@ -11,6 +11,7 @@
 {% bootstrap_messages %}
 
 {% block main %}
+<div class="container">
 <form method="post" action="." class="form">
 {% csrf_token %}
 {% bootstrap_form form %}
@@ -21,4 +22,5 @@
         </button>
     {% endbuttons %}
 </form>
+</div>
 {% endblock %}

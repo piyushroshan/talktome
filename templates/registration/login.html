@@ -1,17 +1,208 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load bootstrap3 %}
 
+{# Load CSS and JavaScript #}
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
 {% block main %}
-<div class = "container">
-<form method="post" action="." >
-{% csrf_token %}
-  {{ form.as_p }}
-
-  <input type="submit" value="{% trans 'Log in' %}" />
-  <input type="hidden" name="next" value="/questionnaire/" />
-</form>
-
-<p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
-<p>{% trans "Not member" %}? <a href="{% url registration_register %}">{% trans "Register" %}</a>!</p>
+<div class="container">
+<div id="login">
+<form class="form-horizontal" name="LoginForm" action="/login/" method="post">
+	{% csrf_token %}
+	{% if next %}
+		<input type="hidden" name="next" value="{{ next }}" />
+	{% endif %}
+	<div class="control-group">
+		<label class="control-label" for="username">Username</label>
+		<div class="controls" id="results">
+			<input type="text" id="username" name="username"  placeholder="Username">
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="password">Password</label>
+		<div class="controls">
+			<input type="password" name="password" id="password" placeholder="Password">
+		</div>
+	</div>
+<div class="control-group">
+	<div class="controls">
+		<button type="submit" class="btn" id="submit">Login</button>
+	</div>
 </div>
+</form>
+</div>
+</div>
+<script>
+
+var create_email = false;
+var final_transcript = '';
+var recognizing = false;
+var ignore_onend;
+var start_timestamp;
+if (!('webkitSpeechRecognition' in window)) {
+  upgrade();
+} else {
+  var recognition = new webkitSpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = false;
+
+  recognition.onstart = function() {
+    recognizing = true;
+  };
+
+recognition.onend = function() {
+    recognizing = false;
+    console.log("gsr stopped")
+    speakPassword();
+    };
+
+  recognition.onresult = function(event) {
+    var interim_transcript = '';
+    var elem = document.getElementById("username")
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        final_transcript += event.results[i][0].transcript;
+      } else {
+        interim_transcript += event.results[i][0].transcript;
+      }
+    }
+    elem.value= final_transcript;
+  };
+}
+
+
+
+function speakUsername(event) {
+	console.log("in speakusername")
+  if (recognizing) {
+    recognition.stop();
+    return;
+  }
+  var elem = document.getElementById("username")
+  final_transcript = '';
+  recognition.start();
+  ignore_onend = false;
+  elem.value = '';
+}
+</script>
+<script>
+function recognisePassword()
+{
+var create_email = false;
+var final_transcript = '';
+var recognizing = false;
+var ignore_onend;
+var start_timestamp;
+if (!('webkitSpeechRecognition' in window)) {
+  upgrade();
+} else {
+  var recognition = new webkitSpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = false;
+
+  recognition.onstart = function() {
+    recognizing = true;
+  };
+
+recognition.onend = function() {
+    recognizing = false;
+    console.log("gsr1 stopped")
+    speakLogin();
+    };
+
+  recognition.onresult = function(event) {
+    var interim_transcript = '';
+    var elem = document.getElementById("password")
+    for (var i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        final_transcript += event.results[i][0].transcript;
+      } else {
+        interim_transcript += event.results[i][0].transcript;
+      }
+    }
+    elem.value= final_transcript;
+  };
+}
+
+
+startRecognising(event);
+function startRecognising(event) {
+	console.log("in speakpassword")
+  if (recognizing) {
+    recognition.stop();
+    return;
+  }
+  var elem = document.getElementById("password")
+  final_transcript = '';
+  recognition.start();
+  ignore_onend = false;
+  elem.value = '';
+}
+}
+</script>
+<script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+<script type="text/javascript" src="/static/js/mespeak/mespeak.js"></script>
+<script type="text/javascript" src="/static/js/annyang.min.js"></script>
+<script type="text/javascript ">
+    meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
+    meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
+</script>
+<script type="text/javascript">
+    function welcome(){
+        var count=1;
+        var read = new Array();
+        console.log("in welcome")
+        read.push({"text":"please speak your username and then wait for the next instruction"});
+        console.log(read);
+        meSpeak.speakMultipart(read);
+        speakUsername(event);
+    }
+    function speakPassword(){
+        var count=1;
+        var read = new Array();
+        console.log("in welcome")
+        read.push({"text":"please speak your password and then wait"});
+        console.log(read);
+        meSpeak.speakMultipart(read);
+        recognisePassword(event);
+    }
+    function speakLogin(){
+        var count=1;
+        var read = new Array();
+        console.log("in speakLogin")
+        read.push({"text":"speak login to login to your account or "});
+        read.push({"text":"speak reload to reload the page"});
+        console.log(read);
+        meSpeak.speakMultipart(read);
+        startannyang();
+       
+    }
+    function startannyang()
+    {
+       if (annyang) {
+      	// Let's define a command.
+        var commands = {
+          'log in': function() { submit("submit"); },
+          'reload': function() { reload(); },
+        };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start();
+    }
+}
+    function submit(data){
+    	console.log("here")
+       		document.getElementById(data).click();
+     }
+   		window.onload = welcome;
+     </script> 
 {% endblock %}
