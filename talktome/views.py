@@ -84,6 +84,7 @@ def login_user(request):
 	username = password = ''
 	if request.POST:
 		username = request.POST['username']
+		print "passsword is" 
 		print username
 		username.replace(" ", "")
 		password = request.POST['password']

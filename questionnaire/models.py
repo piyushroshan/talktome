@@ -6,6 +6,8 @@ class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 	dob = models.DateField();
 	gender = models.CharField(max_length = 1)
+	blind = models.BooleanField(default= False)
+	pwd = models.CharField(max_length = 256,default="password")
 	def __unicode__(self):
 		return u'%s %s' % (self.user.first_name,self.user.last_name)
 

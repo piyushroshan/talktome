@@ -36,6 +36,8 @@
 </div>
 </form>
 </div>
+<p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
+<p>{% trans "Not member" %}? <a href="{% url registration_register %}">{% trans "Register" %}</a>!</p>
 </div>
 <script>
 
@@ -203,6 +205,6 @@ function startRecognising(event) {
     	console.log("here")
        		document.getElementById(data).click();
      }
-   		window.onload = welcome;
+   		//window.onload = welcome;
      </script> 
 {% endblock %}

@@ -14,7 +14,7 @@
 <div class="container">
 <form method="post" action="." class="form">
 {% csrf_token %}
-{% bootstrap_form form %}
+{% bootstrap_form form.as_p %}
   
 {% buttons %}
         <button type="submit" class="btn btn-primary">
