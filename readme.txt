@@ -59,4 +59,21 @@ LOGIN_REDIRECT_URL = '/'
 Add  'registration' to INSTALLED_APPS 
 
 ----------------------------------------------------------------------------------------------------------------------------------------
+Although the table "myapp_tablename" already exists error stop raising after I did ./manage.py migrate myapp --fake, the DatabaseError shows no such column: myapp_mymodel.added_field.
 
+Got exactly the same problem!
+
+1.Firstly check the migration number which is causing this. Lets assume it is: 0010.
+
+2.You need to:
+
+./manage.py schemamigration myapp --add-field MyModel.added_field
+./manage.py migrate myapp
+if there is more than one field missing you have to repeat it for each field.
+
+3.Now you land with a bunch of new migrations so remove their files from myapp/migrations (0011 and further if you needed to add multiple fields).
+
+4.Run this:
+
+./manage.py migrate myapp 0010
+Now try ./manage.py migrate myapp

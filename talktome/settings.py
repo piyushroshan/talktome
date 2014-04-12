@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 
 SITE_ROOT = path.dirname(path.dirname(path.realpath(__file__)))
 
-ACCOUNT_ACTIVATION_DAYS = 2
+ACCOUNT_ACTIVATION_DAYS = 7
 EMAIL_HOST = 'localhost'
 DEFAULT_FROM_EMAIL = 'webmaster@localhost'
 LOGIN_REDIRECT_URL = '/'

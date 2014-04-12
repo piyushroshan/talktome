@@ -8,23 +8,101 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'Answer.ques'
-        db.delete_column('questionnaire_answer', 'ques_id')
+        # Adding model 'UserProfile'
+        db.create_table('questionnaire_userprofile', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
+            ('is_blind', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('pwd', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
+        ))
+        db.send_create_signal('questionnaire', ['UserProfile'])
 
-        # Adding field 'Answer.question'
-        db.add_column('questionnaire_answer', 'question',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['questionnaire.Ques']),
-                      keep_default=False)
+        # Adding model 'Subject'
+        db.create_table('questionnaire_subject', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('desc', self.gf('django.db.models.fields.TextField')(blank=True)),
+        ))
+        db.send_create_signal('questionnaire', ['Subject'])
+
+        # Adding model 'QuestionBank'
+        db.create_table('questionnaire_questionbank', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('desc', self.gf('django.db.models.fields.TextField')()),
+        ))
+        db.send_create_signal('questionnaire', ['QuestionBank'])
+
+        # Adding model 'Ques'
+        db.create_table('questionnaire_ques', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('content', self.gf('django.db.models.fields.TextField')()),
+            ('ques_type', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('score', self.gf('django.db.models.fields.PositiveSmallIntegerField')(max_length=1)),
+            ('ques_bank', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.QuestionBank'])),
+            ('subject', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Subject'])),
+        ))
+        db.send_create_signal('questionnaire', ['Ques'])
+
+        # Adding model 'Option'
+        db.create_table('questionnaire_option', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('content', self.gf('django.db.models.fields.TextField')()),
+            ('question', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Ques'])),
+        ))
+        db.send_create_signal('questionnaire', ['Option'])
+
+        # Adding model 'Answer'
+        db.create_table('questionnaire_answer', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('question', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Ques'])),
+            ('option', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Option'])),
+        ))
+        db.send_create_signal('questionnaire', ['Answer'])
+
+        # Adding model 'Response'
+        db.create_table('questionnaire_response', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('response', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Option'])),
+            ('question', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Ques'])),
+        ))
+        db.send_create_signal('questionnaire', ['Response'])
+
+        # Adding model 'UserScore'
+        db.create_table('questionnaire_userscore', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('ques_bank', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.QuestionBank'])),
+            ('score', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
+        ))
+        db.send_create_signal('questionnaire', ['UserScore'])
 
 
     def backwards(self, orm):
-        # Adding field 'Answer.ques'
-        db.add_column('questionnaire_answer', 'ques',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['questionnaire.Ques']),
-                      keep_default=False)
+        # Deleting model 'UserProfile'
+        db.delete_table('questionnaire_userprofile')
 
-        # Deleting field 'Answer.question'
-        db.delete_column('questionnaire_answer', 'question_id')
+        # Deleting model 'Subject'
+        db.delete_table('questionnaire_subject')
+
+        # Deleting model 'QuestionBank'
+        db.delete_table('questionnaire_questionbank')
+
+        # Deleting model 'Ques'
+        db.delete_table('questionnaire_ques')
+
+        # Deleting model 'Option'
+        db.delete_table('questionnaire_option')
+
+        # Deleting model 'Answer'
+        db.delete_table('questionnaire_answer')
+
+        # Deleting model 'Response'
+        db.delete_table('questionnaire_response')
+
+        # Deleting model 'UserScore'
+        db.delete_table('questionnaire_userscore')
 
 
     models = {
@@ -100,15 +178,15 @@ class Migration(SchemaMigration):
         },
         'questionnaire.subject': {
             'Meta': {'object_name': 'Subject'},
-            'desc': ('django.db.models.fields.TextField', [], {}),
+            'desc': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         'questionnaire.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
-            'dob': ('django.db.models.fields.DateField', [], {}),
-            'gender': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_blind': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'pwd': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'})
         },
         'questionnaire.userscore': {

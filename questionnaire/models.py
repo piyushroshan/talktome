@@ -1,16 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from registration.signals import user_registered
 # Create your models here.
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
-	dob = models.DateField();
-	gender = models.CharField(max_length = 1)
-	blind = models.BooleanField(default= False)
-	pwd = models.CharField(max_length = 256,default="password")
+	is_blind = models.BooleanField()
+	#dob = models.DateField();
+	#gender = models.CharField(max_length = 1)
+	#blind = models.BooleanField(default= True)
+	pwd = models.CharField(max_length = 256, blank=True)
 	def __unicode__(self):
 		return u'%s %s' % (self.user.first_name,self.user.last_name)
-
+		
 class Subject(models.Model):
 	name = models.CharField(max_length = 255)
 	desc = models.TextField(blank=True)

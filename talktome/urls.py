@@ -7,7 +7,7 @@ from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from django.conf import settings
 from talktome.views import *
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
+from registration.backends.default.views import RegistrationView
 from django.views.generic.simple import direct_to_template
 dajaxice_autodiscover()
 admin.autodiscover()
@@ -22,7 +22,8 @@ urlpatterns = patterns('',
 #	(r'^accounts/login/$', 'django.contrib.auth.views.login'),
 	(r'^questionnaire/',include('questionnaire.urls')),
 	# Serve static content. This line is important to serve the static content i.e the css,javascript files.
-	(r'^accounts/', include('registration.urls')),
+	url(r'^register/$', register, name='register'),
+	(r'^accounts/', include('registration.backends.default.urls')),
 	(r'^$', direct_to_template, 
             { 'template': 'index.html' }, 'index'), 
 	(r'^logout/$', logout_page),
