@@ -56,7 +56,14 @@
       // Let's define a command.
         var commands = {
           'Pause': function() {counter=recurseLoop; recurseLoop=c_split_result.length; console.log(recurseLoop); },
-          'resume':function() {recurseLoop=counter; playNext(); console.log(recurseLoop); },
+          'resume':function() {recurseLoop=counter-1; playNext(); console.log(recurseLoop); },
+          'stop' : function() {counter=recurseLoop; 
+          	recurseLoop=c_split_result.length; 
+          	console.log(recurseLoop);
+          	for(i = 0; i < c_split_result.length; i++){
+        	meSpeak.stop(c_split_result[i]);
+        	//console.log(c_split_result[i]);
+		} },
         };
 
       // Add our commands to annyang
