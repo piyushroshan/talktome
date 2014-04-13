@@ -17,9 +17,22 @@
 <div class="container">
 {% if topic_content %}
 <h1>{{topic}}</h1>
-<h3>{% autoescape off %}{{ topic_content }}{% endautoescape %}</h3>
+<h3 id="content">{% autoescape off %}{{ topic_content }}{% endautoescape %}</h3>
 {% else %}
     <p>No content is available.</p>
 {% endif %}
 </div>
+<script type="text/javascript">
+        function speakContent(){
+        var count=1;
+        var read = new Array();
+        var content=document.getElementById("content");
+        var c=content.textContent || content.innerText
+        read.push({"text":"{{topic}}"});
+        read.push({"text":c});
+        console.log(read);
+        meSpeak.speakMultipart(read);
+        }
+        window.onload = speakContent;
+     </script>
 {% endblock %}

@@ -51,7 +51,8 @@ def content(request,topic_id):
 	topic=Topic.objects.get(id=topic_id)
 	print topic
 	for m in material:
-		res = plaintext2html(m.upFile.read())
-		print res
-		context ={'topic_content' : res,'topic': topic}
+		text = m.upFile.read()
+		html = plaintext2html(text)
+		print text
+		context ={'topic_content' : html,'topic': topic}
 	return render(request, 'onlinestudy/content.html',context)
