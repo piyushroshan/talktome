@@ -6,5 +6,4 @@ urlpatterns = patterns('',
     url(r'^subjects$', views.subjects, name='subjects'),
     url(r'^(?P<subject_id>\d+)/$',views.mcq, name='mcq'),
     url(r'^speech$', views.speech, name='speech'),
-    url(r'^online_study$', views.subjects, name='subjects'),
 )

@@ -21,6 +21,7 @@ urlpatterns = patterns('',
 	 # Home page of talktome
 #	(r'^accounts/login/$', 'django.contrib.auth.views.login'),
 	(r'^questionnaire/',include('questionnaire.urls')),
+	(r'^onlinestudy/',include('onlinestudy.urls')),
 	# Serve static content. This line is important to serve the static content i.e the css,javascript files.
 	url(r'^register/$', register, name='register'),
 	(r'^accounts/', include('registration.backends.default.urls')),
