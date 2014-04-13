@@ -10,3 +10,4 @@ jsonpickle==0.6.1
 simplejson==3.3.2
 wsgiref==0.1.2
 django-admin-bootstrapped
+django-bootstrap3
