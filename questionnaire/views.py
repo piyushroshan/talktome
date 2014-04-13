@@ -14,6 +14,9 @@ def subjects(request):
 	context ={'subject_list' : subject_list}
 	return render(request, 'questionnaire/subjects.html' , context)
 
+def online_study(request):
+	return render_to_response('online_study/index.html')
+
 @login_required
 def mcq(request,subject_id):
 	subject = Subject.objects.get(pk=subject_id)

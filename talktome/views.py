@@ -122,20 +122,63 @@ def register(request):
 
 def login_user(request):
 	logout(request)
-	username = password = ''
+	user_name = pass_word = ''
 	if request.POST:
-		username = request.POST['username']
-		print "passsword is" 
-		print username
-		username.replace(" ", "")
-		password = request.POST['password']
+		user_name = request.POST['username']
+		print "username is" 
+		print user_name
+		user_name.replace(" ", "")
+		pass_word = request.POST['password']
 		print "passsword is"
-		print password
-		password.replace(" ", "")
-		print password
-		user = authenticate(username=username, password=password)
-		if user is not None:
-			if user.is_active:
-				login(request, user)
-				return HttpResponseRedirect('/')
+		print pass_word
+		pass_word.replace(" ", "")
+		print pass_word
+        u=UserProfile.objects.all()
+        for e in u:
+            if e.user.username == user_name:
+                if e.blind:
+                    percent = lcs(pass_word,e.pwd)
+                    print "percentage matching is"
+                    print percent
+                    if percent >= 60 :
+                       user = authenticate(username=user_name, password=e.pwd)
+                       if user is not None:
+                        if user.is_active:
+                            login(request, user)
+                            return HttpResponseRedirect('/') 
+                else:
+                    user = authenticate(username=username, password=pass_word)
+                    if user is not None:
+                        if user.is_active:
+                            login(request, user)
+                            return HttpResponseRedirect('/')
 	return render_to_response('registration/login.html', context_instance=RequestContext(request)) 
+
+def lcs(a, b):
+    lengths = [[0 for j in range(len(b)+1)] for i in range(len(a)+1)]
+    # row 0 and column 0 are initialized to 0 already
+    for i, x in enumerate(a):
+        for j, y in enumerate(b):
+            if x == y:
+                lengths[i+1][j+1] = lengths[i][j] + 1
+            else:
+                lengths[i+1][j+1] = \
+                    max(lengths[i+1][j], lengths[i][j+1])
+    # read the substring out from the matrix
+    result = ""
+    x, y = len(a), len(b)
+    while x != 0 and y != 0:
+        if lengths[x][y] == lengths[x-1][y]:
+            x -= 1
+        elif lengths[x][y] == lengths[x][y-1]:
+            y -= 1
+        else:
+            assert a[x-1] == b[y-1]
+            result = a[x-1] + result
+            x -= 1
+            y -= 1
+    print result
+    len_result=len(result)
+    len_b=len(b)
+    percent=(len_result*1.0/len_b)*100
+    return percent

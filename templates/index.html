@@ -26,12 +26,12 @@
           {% if user.is_authenticated %}
           <p><a href="/questionnaire/subjects" id="1" class="btn btn-custom btn-lg" role="button">Take Test</a></p>
           <hr>
-          <p><a class="btn btn-custom btn-lg" id="2" role="button">Online Study</a></p>
+          <p><a href="/questionnaire/online_study" class="btn btn-custom btn-lg" id="2" role="button">Online Study</a></p>
         </hr>
         {% else %}
           <p><a href="{% url auth_login %}" id="1"  class="btn btn-custom btn-lg" role="button">Login/Register</button></a><p>
           	<hr>
-            <p><a href="/guest/" id="2" class="btn btn-default btn-lg" role="button">Guest Area</button></a> </p>
+            <p><a href="/online_study/" id="2" class="btn btn-default btn-lg" role="button">Guest Area</button></a> </p>
 				</hr>
 				{% endif %}  
     </div>
