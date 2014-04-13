@@ -1,19 +1,23 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title></title>
-    </head>
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
 
-    <body>
-        <h1>Register with Rango</h1>
+{# Load CSS and JavaScript #}
 
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block main %}
+<div class="container">
         {% if registered %}
-        <strong>thank you for registering!</strong>
+        <strong>Thank you for registering!</strong><br>
         <a href="/">Return to the homepage.</a><br />
         {% else %}
-        <strong>register here!</strong><br />
 
-        <form id="user_form" method="post" action="/register/"
+        <form id="user_form" method="post" action="."
                 enctype="multipart/form-data">
 
             {% csrf_token %}
@@ -25,8 +29,12 @@
             {{ profile_form.as_p }}
 
             <!-- Provide a button to click to submit the form. -->
-            <input type="submit" name="submit" value="Register" />
+            {% buttons %}
+        <button type="submit" class="btn btn-primary">
+            {% bootstrap_icon "star" %} Submit
+        </button>
+    {% endbuttons %}
         </form>
         {% endif %}
-    </body>
-</html>
+</div>
+{% endblock %}

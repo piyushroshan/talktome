@@ -12,8 +12,8 @@ class Migration(SchemaMigration):
         db.create_table('questionnaire_userprofile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
-            ('dob', self.gf('django.db.models.fields.DateField')()),
-            ('gender', self.gf('django.db.models.fields.CharField')(max_length=1)),
+            ('blind', self.gf('django.db.models.fields.NullBooleanField')(null=True, blank=True)),
+            ('pwd', self.gf('django.db.models.fields.CharField')(max_length=256, blank=True)),
         ))
         db.send_create_signal('questionnaire', ['UserProfile'])
 
@@ -21,7 +21,7 @@ class Migration(SchemaMigration):
         db.create_table('questionnaire_subject', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('desc', self.gf('django.db.models.fields.TextField')()),
+            ('desc', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
         db.send_create_signal('questionnaire', ['Subject'])
 
@@ -55,7 +55,7 @@ class Migration(SchemaMigration):
         # Adding model 'Answer'
         db.create_table('questionnaire_answer', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('ques', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Ques'])),
+            ('question', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Ques'])),
             ('option', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['questionnaire.Option'])),
         ))
         db.send_create_signal('questionnaire', ['Answer'])
@@ -146,7 +146,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Answer'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'option': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['questionnaire.Option']"}),
-            'ques': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['questionnaire.Ques']"})
+            'question': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['questionnaire.Ques']"})
         },
         'questionnaire.option': {
             'Meta': {'object_name': 'Option'},
@@ -178,15 +178,15 @@ class Migration(SchemaMigration):
         },
         'questionnaire.subject': {
             'Meta': {'object_name': 'Subject'},
-            'desc': ('django.db.models.fields.TextField', [], {}),
+            'desc': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         'questionnaire.userprofile': {
             'Meta': {'object_name': 'UserProfile'},
-            'dob': ('django.db.models.fields.DateField', [], {}),
-            'gender': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            'blind': ('django.db.models.fields.NullBooleanField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'pwd': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'})
         },
         'questionnaire.userscore': {

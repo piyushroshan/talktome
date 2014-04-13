@@ -4,7 +4,7 @@ from registration.signals import user_registered
 # Create your models here.
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
-	is_blind = models.BooleanField()
+	blind = models.NullBooleanField()
 	#dob = models.DateField();
 	#gender = models.CharField(max_length = 1)
 	#blind = models.BooleanField(default= True)

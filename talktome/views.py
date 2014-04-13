@@ -91,8 +91,8 @@ def register(request):
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the UserProfile model.
-            if 'is_blind' in request.POST:
-                profile.is_blind = request.POST['is_blind']
+            if 'blind' in request.POST:
+                profile.blind = request.POST['blind']
 
             if 'pwd' in request.POST:
                 profile.pwd = request.POST['pwd']
