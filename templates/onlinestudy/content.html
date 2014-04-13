@@ -23,16 +23,47 @@
 {% endif %}
 </div>
 <script type="text/javascript">
-        function speakContent(){
-        var count=1;
-        var read = new Array();
+		
+		var pause_arr=[];
+		var read = []
+        var counter;
+        var recurseLoop = 0;
         var content=document.getElementById("content");
         var c=content.textContent || content.innerText
-        read.push({"text":"{{topic}}"});
-        read.push({"text":c});
+        //var result=new Array()
+        //result = subject.split(/\r?\n/);
+        //read.push({"text":"{{topic}}"});
+        //read.push({"text":c});
+        var c_split_result = c.split(".");
+        function speakContent(){
+        for(i = 0; i < c_split_result.length; i++){
+        	read.push({"text":c_split_result[i]})
+        	pause_arr[i]=c_split_result[i].length
+        	console.log(c_split_result[i].length);
+        	//console.log(c_split_result[i]);
+		}
+		setTimeout(function(){meSpeak.speak(c_split_result[0],1,playNext)},pause_arr[i]);
         console.log(read);
-        meSpeak.speakMultipart(read);
+        //meSpeak.speakMultipart(read);
         }
+        function playNext() {
+  			if (++recurseLoop < c_split_result.length) {
+    		setTimeout(function(){meSpeak.speak(c_split_result[recurseLoop],1,playNext)},pause_arr[recurseLoop]);
+  			}
+		}
         window.onload = speakContent;
+       if (annyang) {
+      // Let's define a command.
+        var commands = {
+          'Pause': function() {counter=recurseLoop; recurseLoop=c_split_result.length; console.log(recurseLoop); },
+          'resume':function() {recurseLoop=counter; playNext(); console.log(recurseLoop); },
+        };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start();
+    } 
      </script>
 {% endblock %}
