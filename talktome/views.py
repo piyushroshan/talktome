@@ -121,38 +121,47 @@ def register(request):
             context)
 
 def login_user(request):
-	logout(request)
-	user_name = pass_word = ''
-	if request.POST:
-		user_name = request.POST['username']
-		print "username is" 
-		print user_name
-		user_name.replace(" ", "")
-		pass_word = request.POST['password']
-		print "passsword is"
-		print pass_word
-		pass_word.replace(" ", "")
-		print pass_word
+    logout(request)
+    login_var=False
+    user_name=pass_word=''
+    if request.POST:
+
+        user_name = request.POST['username']
+        print "username is" 
+        print user_name
+        pass_word = request.POST['password']
+        print "passsword is"
+        print pass_word
         u=UserProfile.objects.all()
+        print u
         for e in u:
-            if e.user.username == user_name:
+            temp=e.user.username
+            u_percent = lcs(user_name,temp)
+            if u_percent == 100 :
+                percent = lcs(pass_word,e.pwd)
+                print "password matching is"
+                print percent
                 if e.blind:
-                    percent = lcs(pass_word,e.pwd)
                     print "percentage matching is"
                     print percent
                     if percent >= 60 :
-                       user = authenticate(username=user_name, password=e.pwd)
-                       if user is not None:
-                        if user.is_active:
-                            login(request, user)
-                            return HttpResponseRedirect('/') 
+                        user = authenticate(username=temp, password=e.pwd)
+                        if user is not None:
+                            if user.is_active:
+                                login_var=True
+                                login(request, user)
+                                return HttpResponseRedirect('/')
+                    else:
+                        return render_to_response('registration/login.html', {'message':"Invalid username or password."}, RequestContext(request))
                 else:
-                    user = authenticate(username=username, password=pass_word)
-                    if user is not None:
-                        if user.is_active:
-                            login(request, user)
-                            return HttpResponseRedirect('/')
-	return render_to_response('registration/login.html', context_instance=RequestContext(request)) 
+                    if percent == 100:
+                        user = authenticate(username=user_name, password=pass_word)
+                        if user is not None:
+                            if user.is_active:
+                                login_var=True
+                                login(request, user)
+                                return HttpResponseRedirect('/')
+	return render_to_response('registration/login.html', {'message':"Invalid username or password."}, RequestContext(request)) 
 
 def lcs(a, b):
     lengths = [[0 for j in range(len(b)+1)] for i in range(len(a)+1)]

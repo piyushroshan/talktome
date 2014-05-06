@@ -18,7 +18,7 @@
 <h3>Choose the subject
     <ol>
     {% for subject in subject_list %}
-        <hr><li><a href="/onlinestudy/{{ subject.id }}/" id = "{{subject.name}}">{{ subject.name}}</a></li></hr>
+        <hr><li><a href="/onlinestudy/{{ subject.id }}/" id = "{{forloop.counter}}">{{ subject.name}}</a></li></hr>
     {% endfor %}
     </ol></h3>
 {% else %}
@@ -59,9 +59,13 @@
      if (annyang) {
       // Let's define a command.
         var commands = {
-          'Unix': function() { selectOption("Unix"); },
-          'Database *term': function() { selectOption("Database Management System"); },
-          'Software *term': function() { selectOption("Software Engineering"); },
+          'one': function() { selectOption(1); },
+          'two': function() { selectOption(2); },
+          'three': function() { selectOption(3); },
+          'four': function() { selectOption(4); },
+          'five': function() { selectOption(5); },
+          'six': function() { selectOption(6); },
+          'seven': function() { selectOption(7); },
         };
 
       // Add our commands to annyang

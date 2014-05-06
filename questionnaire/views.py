@@ -19,8 +19,8 @@ def mcq(request,subject_id):
 	subject = Subject.objects.get(pk=subject_id)
 	#ques_bank = QuestionBank.objects.filter(subject__id=subject_id)
 	#slogan = Slogan.objects.order_by('?')[0].slogan
-	ques_list = Ques.objects.filter(subject__id=subject_id,ques_bank__name='QBU1')
-	qb="QBU1"
+	ques_list = Ques.objects.filter(subject__id=subject_id,ques_bank__name='E1')
+	qb="QBE1"
 	question = ques_list[0]
 	option = Option.objects.filter(question__id=question.id)
 	context = {'subject_name':subject.name,'question':question,'opt_list':option,'qb':qb}
