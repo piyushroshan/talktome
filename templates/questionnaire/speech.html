@@ -3,117 +3,14 @@
 <meta charset="utf-8">
 <title>Web Speech API Demo</title>
 <body>
-<div id="results">
-  <input type="text" id="username" name="username"  placeholder="Username">
-  <input type="password" name="password" id="password" placeholder="Password">
-  <p>
-</div>
-<script>
-
-var create_email = false;
-var final_transcript = '';
-var recognizing = false;
-var ignore_onend;
-var start_timestamp;
-if (!('webkitSpeechRecognition' in window)) {
-  upgrade();
-} else {
-  var recognition = new webkitSpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = false;
-
-  recognition.onstart = function() {
-    recognizing = true;
-  };
-
-recognition.onend = function() {
-    recognizing = false;
-    console.log("gsr stopped")
-    startspeech();
-    };
-
-  recognition.onresult = function(event) {
-    var interim_transcript = '';
-    var elem = document.getElementById("username")
-    for (var i = event.resultIndex; i < event.results.length; ++i) {
-      if (event.results[i].isFinal) {
-        final_transcript += event.results[i][0].transcript;
-      } else {
-        interim_transcript += event.results[i][0].transcript;
-      }
-    }
-    elem.value= final_transcript;
-  };
-}
-
-
-
-function speakUsername(event) {
-  if (recognizing) {
-    recognition.stop();
-    return;
-  }
-  var elem = document.getElementById("username")
-  final_transcript = '';
-  recognition.start();
-  ignore_onend = false;
-  elem.value = '';
-}
-
-window.onload = speakUsername(event);
-</script>
-<script>
-function startspeech()
-{
-var create_email = false;
-var final_transcript = '';
-var recognizing = false;
-var ignore_onend;
-var start_timestamp;
-if (!('webkitSpeechRecognition' in window)) {
-  upgrade();
-} else {
-  var recognition = new webkitSpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = false;
-
-  recognition.onstart = function() {
-    recognizing = true;
-  };
-
-recognition.onend = function() {
-    recognizing = false;
-    console.log("gsr1 stopped")
-    };
-
-  recognition.onresult = function(event) {
-    var interim_transcript = '';
-    var elem = document.getElementById("password")
-    for (var i = event.resultIndex; i < event.results.length; ++i) {
-      if (event.results[i].isFinal) {
-        final_transcript += event.results[i][0].transcript;
-      } else {
-        interim_transcript += event.results[i][0].transcript;
-      }
-    }
-    elem.value= final_transcript;
-  };
-}
-
-
-speakPassword(event);
-function speakPassword(event) {
-  if (recognizing) {
-    recognition.stop();
-    return;
-  }
-  var elem = document.getElementById("password")
-  final_transcript = '';
-  recognition.start();
-  ignore_onend = false;
-  elem.value = '';
-}
-}
-</script>
+<script type="text/javascript">
+    var u = new SpeechSynthesisUtterance();
+     u.text = 'Hello World';
+     u.lang = 'en-US';
+     u.rate = 1.2;
+     speechSynthesis.speak(u);
+     u.text = 'Hello Worlfhhd';
+     speechSynthesis.speak(u);
+  </script>
 </body>
 </html>

@@ -10,7 +10,6 @@ class OptionInline(admin.TabularInline):
 
 class QuesAdmin(admin.ModelAdmin):
     list_display = ('subject', 'content' , 'ques_bank') 
-    search_fields = ('subject', 'ques_bank')
     fields = ('ques_type','subject', 'ques_bank', 'content', 'score')
     inlines = [OptionInline]
 admin.site.register(Ques,QuesAdmin)

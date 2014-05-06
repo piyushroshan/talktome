@@ -26,8 +26,8 @@ class QuestionBank(models.Model):
 
 class Ques(models.Model):
 	content = models.TextField()
-	ques_type = models.CharField(max_length = 255)
-	score = models.PositiveSmallIntegerField(max_length = 1)
+	ques_type = models.CharField(max_length = 1 , default= 'A')
+	score = models.PositiveSmallIntegerField(max_length = 1 , default= 1)
 	ques_bank = models.ForeignKey(QuestionBank)
 	subject = models.ForeignKey(Subject)
 	def __unicode__(self):
