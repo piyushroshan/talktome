@@ -28,11 +28,11 @@
 		</div>
 			<button type="submit" class="btn btn-default" id="submit">Login</button>
 </form></div>
-<p>{% trans "Forgot password" %}? <a href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
-<p>{% trans "Not member" %}? <a href="/register/">{% trans "Register" %}</a>!</p>
+<p>{% trans "Forgot password" %}? <a  href="{% url auth_password_reset %}">{% trans "Reset it" %}</a>!</p>
+<p>{% trans "Not member" %}? <a id ="register" href="/register/">{% trans "Register" %}</a>!</p>
 </div>
 <script>
-
+function speakUsername(event) {
 var create_email = false;
 var final_transcript = '';
 var recognizing = false;
@@ -71,7 +71,7 @@ recognition.onend = function() {
 
 
 
-function speakUsername(event) {
+
 	console.log("in speakusername")
   if (recognizing) {
     recognition.stop();
@@ -183,7 +183,8 @@ function startRecognising(event) {
       	// Let's define a command.
         var commands = {
           'log in': function() { submit("submit"); },
-          'reload': function() { reload(); },
+          'reload': function() { location.reload(); },
+          'register': function() { document.getElementById("register").click(); },
         };
 
       // Add our commands to annyang
