@@ -16,13 +16,20 @@ def subjects(request):
 
 @login_required
 def mcq(request,subject_id):
+	user=request.user
 	subject = Subject.objects.get(pk=subject_id)
 	#ques_bank = QuestionBank.objects.filter(subject__id=subject_id)
 	#slogan = Slogan.objects.order_by('?')[0].slogan
-	ques_list = Ques.objects.filter(subject__id=subject_id,ques_bank__name='E1')
-	qb="QBE1"
+	ques_list = Ques.objects.filter(subject__id=subject_id,ques_bank__name='GK1')
+	qb="GKE1"
 	question = ques_list[0]
 	option = Option.objects.filter(question__id=question.id)
+	try:
+		user_score = UserScore.objects.get(user=user, ques_bank__name='GK1')
+	except (UserScore.DoesNotExist):
+		user_score = UserScore(user=user, ques_bank__name='GK1', score=0)
+	user_score.score=0;
+	user_score.save()
 	context = {'subject_name':subject.name,'question':question,'opt_list':option,'qb':qb}
 	response=render(request,'questionnaire/mcq.html',context)
 	response.set_cookie('quesno', 0)

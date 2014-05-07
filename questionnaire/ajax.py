@@ -36,7 +36,7 @@ def response_user(request,question,option):
     quesno = int(request.COOKIES.get('quesno','0'))
     max_age = 14*24*60*60 # two weeks
     expires = datetime.strftime(datetime.utcnow() + timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
-    if(quesno < 2):
+    if(quesno < 9):
         print "here"
         question = Ques.objects.get(pk=(quesno+1))
         ques_bank = question.ques_bank
