@@ -54,3 +54,9 @@ class UserScore(models.Model):
 	user = models.ForeignKey(User)
 	ques_bank = models.ForeignKey(QuestionBank)
 	score = models.PositiveSmallIntegerField()
+
+class Sub_Qb(models.Model):
+	ques_bank = models.ForeignKey(QuestionBank)
+	subject = models.ForeignKey(Subject)
+	def __unicode__(self):
+		return u'%s %s' % (self.ques_bank, self.subject,)

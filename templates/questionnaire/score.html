@@ -11,5 +11,52 @@
 {% bootstrap_messages %}
 
 {% block main %}
-<h1>Your score is {{ user_score }} </h1>
+<div class="container">
+	<h1> Your score is {{ user_score }}</h1>
+      <div class="row">
+        <center><div class="col-md-12">
+          {% if user.is_authenticated %}
+          <p><a href="/questionnaire/showdetails" id="1" class="btn btn-custom btn-lg" role="button">Show details</a></p>
+          <hr>
+          <p><a href="/questionnaire/subjects" id="1" class="btn btn-custom btn-lg" role="button">Take Another Test</a></p>
+          <hr>
+          <p><a href="/onlinestudy/subjects" class="btn btn-custom btn-lg" id="2" role="button">Online Study</a></p>
+
+        </hr>
+        {% else %}
+          <p><a href="{% url auth_login %}" id="1"  class="btn btn-custom btn-lg" role="button">Login</button></a><p>
+          	<hr>
+            <p><a href="/onlinestudy/subjects" id="2" class="btn btn-default btn-lg" role="button">Online Study</button></a> </p>
+				</hr>
+				{% endif %}  
+    </div>
+</center>
+      </div>
+</div>
+<script>
+function speakScore(option){
+        var count=1;
+        var score={{user_score}}
+        var read = new Array();
+        read.push({"text" : "Your score is"});
+        read.push({"text" : "\n"});
+        read.push({"text" : score});
+        console.log(read);
+        meSpeak.speakMultipart(read);
+   }
+   window.onLoad=speakScore()
+</script>
+ <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% dajaxice_js_import %}
+     <script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
+     <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+     <script type="text/javascript" src="/static/js/mespeak/mespeak.js"></script>
+     <script type="text/javascript" src="/static/js/annyang.min.js"></script>
+  	 <script type="text/javascript ">
+     	meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
+    	meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
+     </script>
 {% endblock %}

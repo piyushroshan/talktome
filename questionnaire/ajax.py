@@ -24,6 +24,12 @@ def response_user(request,question,option):
     option = Option.objects.get(pk=option)
     ques_bank = question.ques_bank
     answer = Answer.objects.get(question=question)
+    sub_name=Sub_Qb.objects.filter(ques_bank__name=ques_bank)
+    for s in sub_name:
+     print s.subject
+    ques_count=Ques.objects.filter(subject__name=s.subject).count()
+    print "number of questions in this set"
+    print ques_count
     response = Response(question=question, response=option, user=user)
     response.save()
     try:
@@ -36,7 +42,7 @@ def response_user(request,question,option):
     quesno = int(request.COOKIES.get('quesno','0'))
     max_age = 14*24*60*60 # two weeks
     expires = datetime.strftime(datetime.utcnow() + timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
-    if(quesno < 9):
+    if(quesno < (ques_count-1)):
         print "here"
         question = Ques.objects.get(pk=(quesno+1))
         ques_bank = question.ques_bank
