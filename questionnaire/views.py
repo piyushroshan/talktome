@@ -17,6 +17,7 @@ def subjects(request):
 
 @login_required
 def mcq(request,subject_id):
+	res=Response.objects.filter(user__username=request.user).delete()
 	user=request.user
 	subject = Subject.objects.get(pk=subject_id)
 	qb_list=Sub_Qb.objects.filter(subject__name=subject)
@@ -29,7 +30,7 @@ def mcq(request,subject_id):
 	try:
 		user_score = UserScore.objects.get(user=user, ques_bank__name=qb.ques_bank)
 	except (UserScore.DoesNotExist):
-		user_score = UserScore(user=user, ques_bank__name='GK1', score=0)
+		user_score = UserScore(user=user, ques_bank=qb.ques_bank, score=0)
 	user_score.score=0;
 	user_score.save()
 	context = {'subject_name':subject.name,'question':question,'opt_list':option,'qb':qb.ques_bank}
@@ -39,7 +40,6 @@ def mcq(request,subject_id):
 
 def index(request):
 	return render_to_response('questionnaire/index.html')
-
 
 def speech(request):
 	return render_to_response('questionnaire/speech.html')

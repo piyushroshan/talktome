@@ -24,10 +24,10 @@ def response_user(request,question,option):
     option = Option.objects.get(pk=option)
     ques_bank = question.ques_bank
     answer = Answer.objects.get(question=question)
-    sub_name=Sub_Qb.objects.filter(ques_bank__name=ques_bank)
-    for s in sub_name:
-     print s.subject
-    ques_count=Ques.objects.filter(subject__name=s.subject).count()
+    #sub_name=Sub_Qb.objects.filter(ques_bank__name=ques_bank)
+    #for s in sub_name:
+     #print s.subject
+    ques_count=Ques.objects.filter(ques_bank__name=ques_bank).count()
     print "number of questions in this set"
     print ques_count
     response = Response(question=question, response=option, user=user)
@@ -48,7 +48,7 @@ def response_user(request,question,option):
         ques_bank = question.ques_bank
         ques_list = Ques.objects.filter(ques_bank=ques_bank)
         question = ques_list[quesno+1]
-        print question
+        #print question
         option = Option.objects.filter(question__id=question.id)
         context = RequestContext(request,{'question':question,'opt_list':option})
         template = get_template('questionnaire/mcq_template.html')

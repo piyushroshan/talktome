@@ -13,7 +13,7 @@ class QuesAdmin(admin.ModelAdmin):
     fields = ('ques_type','subject', 'ques_bank', 'content', 'score')
     inlines = [OptionInline]
 admin.site.register(Ques,QuesAdmin)
-#admin.site.register(Response)
+admin.site.register(Response)
 #admin.site.register(Option)
 admin.site.register(QuestionBank)
 admin.site.register(Subject)
