@@ -91,7 +91,9 @@
 
      function submitAnswer(){
         var qid = $(".questionid").text();
+        console.log(qid)
         option = $('input[name='+qid+']:checked', '#question_form').attr('id');
+        console.log(option)
         console.log("Question: "+qid+"\nAnswer: "+option) ;
         Dajaxice.questionnaire.response_user(submitAnswerCallback, {'question':qid,'option': option });
      }

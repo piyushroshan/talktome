@@ -15,7 +15,7 @@ from django.template import Context
 from django.conf import settings
 from django.http import HttpResponse
 from django.core import serializers
-
+from django.db.models import Min
 @dajaxice_register()
 def response_user(request,question,option):
     dajax = Dajax()
@@ -24,6 +24,7 @@ def response_user(request,question,option):
     option = Option.objects.get(pk=option)
     ques_bank = question.ques_bank
     answer = Answer.objects.get(question=question)
+    ques=Ques.objects.filter(ques_bank__name=ques_bank)
     #sub_name=Sub_Qb.objects.filter(ques_bank__name=ques_bank)
     #for s in sub_name:
      #print s.subject
@@ -39,18 +40,19 @@ def response_user(request,question,option):
     if answer.option == option:
         user_score.score = user_score.score + question.score
     user_score.save()
-    quesno = int(request.COOKIES.get('quesno','0'))
+    get_mid=Ques.objects.filter(ques_bank__name=ques_bank).aggregate(Min('id') )
+    quesno = int(request.COOKIES.get('quesno',0))
     max_age = 14*24*60*60 # two weeks
     expires = datetime.strftime(datetime.utcnow() + timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
     if(quesno < (ques_count-1)):
         print "here"
-        question = Ques.objects.get(pk=(quesno+1))
+        question = Ques.objects.get(pk=(quesno+get_mid['id__min']))
         ques_bank = question.ques_bank
         ques_list = Ques.objects.filter(ques_bank=ques_bank)
         question = ques_list[quesno+1]
         #print question
         option = Option.objects.filter(question__id=question.id)
-        context = RequestContext(request,{'question':question,'opt_list':option})
+        context = RequestContext(request,{'question':question,'opt_list':option,'q_counter':quesno+2})
         template = get_template('questionnaire/mcq_template.html')
         content = template.render(context)
         #data = serializers.serialize('json', [question ,], fields=('content'))

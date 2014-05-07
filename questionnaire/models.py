@@ -42,7 +42,8 @@ class Option(models.Model):
 class Answer(models.Model):
 	question=models.ForeignKey(Ques)
 	option=models.ForeignKey(Option)
-
+	def __unicode__(self):
+		return u'%s %s' % (self.question, self.option)
 class Response(models.Model):
 	user = models.ForeignKey(User)
 	response = models.ForeignKey(Option) 

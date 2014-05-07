@@ -22,6 +22,7 @@ def mcq(request,subject_id):
 	subject = Subject.objects.get(pk=subject_id)
 	qb_list=Sub_Qb.objects.filter(subject__name=subject)
 	qb=random.choice(qb_list)
+	request.session['qb_name']=qb.ques_bank
 	print "random quesbank genrated is"
 	print qb.ques_bank
 	ques_list = Ques.objects.filter(subject__id=subject_id,ques_bank__name=qb.ques_bank)
@@ -33,10 +34,37 @@ def mcq(request,subject_id):
 		user_score = UserScore(user=user, ques_bank=qb.ques_bank, score=0)
 	user_score.score=0;
 	user_score.save()
-	context = {'subject_name':subject.name,'question':question,'opt_list':option,'qb':qb.ques_bank}
+	context = {'subject_name':subject.name,'question':question,'opt_list':option,'qb':qb.ques_bank,'q_counter':1}
 	response=render(request,'questionnaire/mcq.html',context)
 	response.set_cookie('quesno', 0)
 	return  response
+
+@login_required
+def showdetails(request):
+	user=request.user
+	qb_name = request.session.get('qb_name')
+	print "machaak"
+	print qb_name
+	res=Response.objects.filter(user=user, question__ques_bank__name=qb_name)
+	ans=Answer.objects.filter(question__ques_bank__name=qb_name)
+	qilist=[]
+	qclist=[]
+	rclist=[]
+	oclist=[]
+	for e in res:
+		for a in ans:
+			if(e.question.id==a.question.id):
+				if(e.response.content!=a.option.content):
+					print e.question.id
+					print e.question.content
+					print e.response.content
+					print a.option.content
+					qilist.append(e.question.id)
+					qclist.append(e.question.content)
+					rclist.append(e.response.content)
+					oclist.append(a.option.content)
+	return HttpResponse("details will be shows here")
+
 
 def index(request):
 	return render_to_response('questionnaire/index.html')
