@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load dajaxice_templatetags %}
+{% block title %}Subjects{% endblock %}
+{% dajaxice_js_import %}
+{% load bootstrap3 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block main %}
+<div class="container">
+<h2>Please listen carefully. Questions that you have done wrong will be read out along with your response and correct answer.</h2>
+{% for res in res_list %}
+	{% for ans in ans_list %}
+		{% if res.question.id = ans.question.id %}
+			{% if not res.response.content in ans.option.content %}
+				<h3>Q{{ forloop.counter }} {{res.question.content}}</h3><h4><b><font color="red">&emsp;Your answer </font></b>{{ res.response.content }}<br><b><font color="green">&emsp;Correct answer </font></b> {{ ans.option.content }}</h4>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+{% endfor %}
+</div>
+<script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
+     <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
+     <script type="text/javascript" src="/static/js/mespeak/mespeak.js"></script>
+     <script type="text/javascript" src="/static/js/annyang.min.js"></script>
+  	 <script type="text/javascript ">
+     	meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
+    	meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
+     </script>
+<script type=text/javascript>
+function speakDetails()
+{
+	console.log("here")
+var read = new Array();
+var qid = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ res.question.id|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
+var qcontent = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ res.question.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
+var resp = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ res.response.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
+var answ = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ ans.option.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
+read.push({'text':"Please listen carefully."})
+read.push({'text':"Questions that you have done wrong will be read out along with your response and correct answer."})
+for (var i=0;i<qid.length;i++)
+{ 
+	read.push({'text':'Question'})
+	read.push({'text':qid[i]})
+	read.push({'text':qcontent[i]})
+	read.push({'text':'Your answer'})
+	read.push({'text':resp[i]})
+	read.push({'text':'Correct Answer'})
+    read.push({'text':answ[i]})
+	console.log(qid[i],qcontent[i],resp[i],answ[i])
+}
+    meSpeak.speakMultipart(read);
+    
+}
+window.onload=speakDetails
+</script>
+<script>
+     if (annyang) {
+      // Let's define a command.
+        var commands = {
+          'home': function() { document.getElementById("home").click();},
+          'stop': function() { meSpeak.stop(); },
+          'logout': function() { document.getElementById("logout").click(); },
+        };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start();
+    }
+   </script>
+{% endblock %}
