@@ -55,7 +55,7 @@
        if (annyang) {
       // Let's define a command.
         var commands = {
-          'Pause': function() {counter=recurseLoop; recurseLoop=c_split_result.length; console.log(recurseLoop); },
+          'wait': function() {counter=recurseLoop; recurseLoop=c_split_result.length; console.log(recurseLoop); },
           'resume':function() {recurseLoop=counter-1; playNext(); console.log(recurseLoop); },
           'stop' : function() {counter=recurseLoop; 
           	recurseLoop=c_split_result.length; 

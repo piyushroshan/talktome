@@ -21,6 +21,7 @@ def mcq(request,subject_id):
 	user=request.user
 	subject = Subject.objects.get(pk=subject_id)
 	qb_list=Sub_Qb.objects.filter(subject__name=subject)
+	print qb_list
 	qb=random.choice(qb_list)
 	request.session['qb_name']=qb.ques_bank
 	print "random quesbank genrated is"
