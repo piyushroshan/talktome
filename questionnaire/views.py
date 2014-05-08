@@ -47,23 +47,9 @@ def showdetails(request):
 	print qb_name
 	res=Response.objects.filter(user=user, question__ques_bank__name=qb_name)
 	ans=Answer.objects.filter(question__ques_bank__name=qb_name)
-	qilist=[]
-	qclist=[]
-	rclist=[]
-	oclist=[]
-	for e in res:
-		for a in ans:
-			if(e.question.id==a.question.id):
-				if(e.response.content!=a.option.content):
-					print e.question.id
-					print e.question.content
-					print e.response.content
-					print a.option.content
-					qilist.append(e.question.id)
-					qclist.append(e.question.content)
-					rclist.append(e.response.content)
-					oclist.append(a.option.content)
-	return HttpResponse("details will be shows here")
+	context={'ans_list':ans,'res_list':res}
+	response=render(request,'questionnaire/showdetails.html',context)
+	return response
 
 
 def index(request):
