@@ -1,0 +1,14 @@
+What is Unix ?
+The UNIX operating system is a set of programs that act as a link between the computer and the user.
+
+The computer programs that allocate the system resources and coordinate all the details of the computer's internals is called the operating system or kernel.
+
+Users communicate with the kernel through a program known as the shell. The shell is a command line interpreter; it translates commands entered by the user and converts them into a language that is understood by the kernel.
+
+Unix was originally developed in 1969 by a group of AT&T employees at Bell Labs, including Ken Thompson, Dennis Ritchie, Douglas McIlroy, and Joe Ossanna.
+
+There are various Unix variants available in the market. Solaris Unix, AIX, HP Unix and BSD are few examples. Linux is also a flavor of Unix which is freely available.
+
+Several people can use a UNIX computer at the same time; hence UNIX is called a multiuser system.
+
+A user can also run multiple programs at the same time; hence UNIX is called multitask

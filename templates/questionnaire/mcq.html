@@ -45,9 +45,10 @@
     function speakQues(){
         var count=1;
         var read = new Array();
-        var qid = $(".questionid").text();
+        var qid = $(".quescounter").text();
         var qcontent = $(".questioncontent").text();
         read.push({"text":"Question"});
+        read.push({"text":qid});
         read.push({"text":qcontent});
         var z = $('ol h3 input[type=radio]').each(function(){
           read.push({"text":"option"});
@@ -57,7 +58,7 @@
           count++;
         });
         console.log(read);
-       // meSpeak.speakMultipart(read);
+        meSpeak.speakMultipart(read,{speed:130});
 
 
         //var z = JSON.parse('{{ opt_list.content }}');
@@ -70,7 +71,7 @@
    <script>
 
 
-   function speakOption(option){
+   function speakOptionSelected(option){
         var count=1;
         var read = new Array();
         read.push({"text" : "You have selected"});
@@ -86,7 +87,7 @@
         });
         read.push({"text" : "Say OK to submit your answer"});
         console.log(read);
-       // meSpeak.speakMultipart(read);
+        meSpeak.speakMultipart(read);
    }
 
      function submitAnswer(){
@@ -107,11 +108,12 @@
     if (annyang) {
       // Let's define a command.
         var commands = {
-          'one': function() { $('ol h3 input[type=radio]').eq(0).attr('checked',true); speakOption(1); },
-          'two': function() { $('ol h3 input[type=radio]').eq(1).attr('checked',true); speakOption(2); },
-          'three': function() { $('ol h3 input[type=radio]').eq(2).attr('checked',true); speakOption(3); },
-          'four': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); speakOption(4); },
-          'five': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); speakOption(5); },
+          'one': function() { $('ol h3 input[type=radio]').eq(0).attr('checked',true); speakOptionSelected(1); },
+          'two': function() { $('ol h3 input[type=radio]').eq(1).attr('checked',true); speakOptionSelected(2); },
+          'three': function() { $('ol h3 input[type=radio]').eq(2).attr('checked',true); speakOptionSelected(3); },
+          'four': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); speakOptionSelected(4); },
+          'five': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); speakOptionSelected(5); },
+          'repeat question' : function(){ speakQues()},
           'ok': function() { submitAnswer(); },
         };
 

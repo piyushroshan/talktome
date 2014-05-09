@@ -16,7 +16,7 @@
       <div class="row">
         <center><div class="col-md-12">
           {% if user.is_authenticated %}
-          <p><a href="/questionnaire/showdetails" id="1" class="btn btn-custom btn-lg" role="button">Show details</a></p>
+          <p><a href="/questionnaire/showdetails" id="details" class="btn btn-custom btn-lg" role="button">Show details</a></p>
           <hr>
           <p><a href="/questionnaire/subjects" id="1" class="btn btn-custom btn-lg" role="button">Take Another Test</a></p>
           <hr>
@@ -43,20 +43,29 @@ function speakScore(option){
         read.push({"text" : score});
         console.log(read);
         meSpeak.speakMultipart(read);
+        annyang.start()
    }
    window.onLoad=speakScore()
-</script>
- <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    {% dajaxice_js_import %}
-     <script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
-     <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
-     <script type="text/javascript" src="/static/js/mespeak/mespeak.js"></script>
-     <script type="text/javascript" src="/static/js/annyang.min.js"></script>
-  	 <script type="text/javascript ">
-     	meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
-    	meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
-     </script>
+   </script>
+   <script>
+     if (annyang) {
+      // Let's define a command.
+        var commands = {
+          'help' : function(){ meSpeak.stop(); helpme()},
+          'refresh' :function(){ location.reload();},
+          'home': function() { document.getElementById("home").click();},
+          'stop': function() { meSpeak.stop(); },
+          'logout': function() { document.getElementById("logout").click(); },
+          'details' :function() { document.getElementById("details").click();},
+          'Take test': function() { document.getElementById(1).click(); },
+          'Online study': function() { document.getElementById(2).click(); },
+        };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start();
+    }
+   </script>
 {% endblock %}

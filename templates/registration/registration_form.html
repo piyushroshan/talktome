@@ -37,4 +37,39 @@
         </form>
         {% endif %}
 </div>
+<script type="text/javascript">
+        function speakStatus(){
+        var count=1;
+        var read = new Array();
+        var status="{{registered}}"
+        var n = status.localeCompare("True");
+        if (n == 0)
+        {
+        read.push({"text":"Thank you for registering"});
+        read.push({"text":"Please speak home to return to home page"});
+        console.log(read);
+        meSpeak.speakMultipart(read);
+        }
+        }
+        window.onload = speakStatus;
+     </script>
+<script>
+     if (annyang) {
+      // Let's define a command.
+        var commands = {
+          'help' : function(){ meSpeak.stop(); helpme()},
+          'refresh' :function(){ location.reload();},
+          'home': function() { document.getElementById("home").click();},
+          'stop': function() { meSpeak.stop(); },
+          'logout': function() { document.getElementById("logout").click(); },
+
+        };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start();
+    }
+   </script>
 {% endblock %}

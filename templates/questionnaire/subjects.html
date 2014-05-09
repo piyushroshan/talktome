@@ -4,15 +4,6 @@
 {% block title %}Subjects{% endblock %}
 {% dajaxice_js_import %}
 {% block main %}
-     <script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
-     <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
-     <script type="text/javascript" src="/static/js/mespeak/mespeak.js"></script>
-     <script type="text/javascript" src="/static/js/annyang.min.js"></script>
-  	 <script type="text/javascript ">
-     	meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
-    	meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
-     </script>
-
 <div class="container">
 {% if subject_list %}
 <h3>Choose the subject
@@ -62,10 +53,12 @@
           'one': function() { selectOption(1); },
           'two': function() { selectOption(2); },
           'three': function() { selectOption(3); },
-          'four': function() { selectOption(4); },
-          'five': function() { selectOption(5); },
-          'six': function() { selectOption(6); },
-          'seven': function() { selectOption(7); },
+          'help' : function(){ meSpeak.stop(); helpme()},
+          'refresh' :function(){ location.reload();},
+          'home': function() { document.getElementById("home").click();},
+          'stop': function() { meSpeak.stop(); },
+          'logout': function() { document.getElementById("logout").click(); },
+
         };
 
       // Add our commands to annyang

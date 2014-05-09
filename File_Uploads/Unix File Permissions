@@ -1,0 +1,34 @@
+File ownership is an important component of UNIX that provides a secure method for storing files. Every file in UNIX has the following attributes:
+Owner permissions: The owner's permissions determine what actions the owner of the file can perform on the file.
+Group permissions: The group's permissions determine what actions a user, who is a member of the group that a file belongs to, can perform on the file.
+Other (world) permissions: The permissions for others indicate what action all other users can perform on the file.
+
+File Access Modes:
+The permissions of a file are the first line of defense in the security of a Unix system. The basic building blocks of Unix permissions are the read, write, and execute permissions, which are described below:
+
+1. Read:
+Grants the capability to read ie. view the contents of the file.
+
+2. Write:
+Grants the capability to modify, or remove the content of the file.
+
+3. Execute:
+User with execute permissions can run a file as a program.
+
+Directory Access Modes:
+
+Directory access modes are listed and organized in the same manner as any other file. There are a few differences that need to be mentioned:
+
+1. Read:
+Access to a directory means that the user can read the contents. The user can look at the filenames inside the directory.
+
+2. Write:
+Access means that the user can add or delete files to the contents of the directory.
+
+3. Execute:
+Executing a directory doesn't really make a lot of sense so think of this as a traverse permission.
+
+A user must have execute access to the bin directory in order to execute ls or cd command.
+
+Changing Permissions:
+To change file or directory permissions, you use the chmod (change mode) command. There are two ways to use chmod: symbolic mode and absolute mode.

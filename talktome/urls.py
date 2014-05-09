@@ -32,6 +32,7 @@ urlpatterns = patterns('',
 	#This mapping is important for incorporating Django's Admin module in our project. If removed Admin module won't work.
 	(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
     (r'^admin/', include(admin.site.urls)),
+    (r'^password_reset/', include('password_reset.urls')),
 	
 	# This line imports Dajaxice settings in our project, Important for AJAX functionality in our project. If removed AJAX functionality won't work.
     #oldstyle

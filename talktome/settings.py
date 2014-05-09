@@ -161,6 +161,7 @@ INSTALLED_APPS = (
     'questionnaire',
     'onlinestudy',
     'sslserver',
+    'password_reset',
 )
 
 # A sample logging configuration. The only tangible logging

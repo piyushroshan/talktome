@@ -29,9 +29,9 @@
           <p><a href="/onlinestudy/subjects" class="btn btn-custom btn-lg" id="2" role="button">Online Study</a></p>
         </hr>
         {% else %}
-          <p><a href="{% url auth_login %}" id="1"  class="btn btn-custom btn-lg" role="button">Login</button></a><p>
+          <p><a href="{% url auth_login %}" id="1"  class="btn btn-custom btn-lg" role="button">Login</a><p>
           	<hr>
-            <p><a href="/onlinestudy/subjects" id="2" class="btn btn-default btn-lg" role="button">Online Study</button></a> </p>
+            <p><a href="/onlinestudy/subjects" id="2" class="btn btn-default btn-lg" role="button">Online Study</a> </p>
 				</hr>
 				{% endif %}  
     </div>
@@ -43,6 +43,13 @@
         var read = new Array();
         read.push({"text":"Welcome to talk to me."});
         read.push({"text":"Please select an option."});
+        var status="{{ user.is_authenticated }}"
+        var n = status.localeCompare("False");
+        if (n == 0)
+        {
+        read.push({"text":"Speak Register"});
+        console.log(read);
+        }        
         var z = $('p a').each(function(){
         read.push({"text":"Speak"});
         read.push({"text":this.text});
@@ -56,6 +63,11 @@
         //var z = JSON.parse('{{ opt_list.content }}');
       //  alert(y)
         //meSpeak.speak(y)
+        }
+        function speakRegister(){
+        var count=1;
+        var read = new Array();
+        
         }
         window.onload = speakOptions;
      </script> 
@@ -80,6 +92,7 @@
           'home': function() { document.getElementById("home").click();},
           'stop': function() { meSpeak.stop(); },
           'logout': function() { document.getElementById("logout").click(); },
+          'register': function() { document.getElementById("register").click(); },
         };
 
       // Add our commands to annyang
