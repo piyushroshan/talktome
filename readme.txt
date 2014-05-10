@@ -5,7 +5,7 @@ For running server on HTTPS (required for speech recognition)
 //Setup stunnel
 //Run the following commands on terminal
 
-sudo aptitude install stunnel
+sudo aptitude install stunnel4
 sudo su -
 cd /etc
 mkdir stunnel

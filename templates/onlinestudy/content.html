@@ -42,13 +42,13 @@
         	console.log(c_split_result[i].length);
         	//console.log(c_split_result[i]);
 		}
-		setTimeout(function(){meSpeak.speak(c_split_result[0],1,playNext)},pause_arr[i]);
+		setTimeout(function(){meSpeak.speak(c_split_result[0],{speed:120},playNext)},pause_arr[i]);
         console.log(read);
         //meSpeak.speakMultipart(read);
         }
         function playNext() {
   			if (++recurseLoop < c_split_result.length) {
-    		setTimeout(function(){meSpeak.speak(c_split_result[recurseLoop],1,playNext)},pause_arr[recurseLoop]);
+    		setTimeout(function(){meSpeak.speak(c_split_result[recurseLoop],{speed:120},playNext)},pause_arr[recurseLoop]);
   			}
 		}
         window.onload = speakContent;
@@ -56,7 +56,7 @@
       // Let's define a command.
         var commands = {
           'wait': function() {counter=recurseLoop; recurseLoop=c_split_result.length; console.log(recurseLoop); },
-          'resume':function() {recurseLoop=counter-1; playNext(); console.log(recurseLoop); },
+          'start':function() {recurseLoop=counter-1; playNext(); console.log(recurseLoop); },
           'stop' : function() {counter=recurseLoop; 
           	recurseLoop=c_split_result.length; 
           	console.log(recurseLoop);
@@ -64,6 +64,7 @@
         	meSpeak.stop(c_split_result[i]);
         	//console.log(c_split_result[i]);
 		} },
+          'repeat':function() {speakContent();},
         };
 
       // Add our commands to annyang
