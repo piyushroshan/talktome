@@ -59,6 +59,18 @@ function speakScore(option){
           'feedback' :function() { document.getElementById("details").click();},
           'Take test': function() { document.getElementById(1).click(); },
           'Online study': function() { document.getElementById(2).click(); },
+          'back':function() { meSpeak.stop(); meSpeak.speak("this is not allowed",{speed:120}); dialog=bootbox.dialog("Alert", {
+           "label" : "Click me!",
+            "class" : "success",   // or primary, or danger, or nothing at all
+            "callback": function() {
+            console.log("not allowed");
+          }
+          });
+          setTimeout(function() {
+          // be careful not to call box.hide() here, which will invoke jQuery's hide method
+           dialog.modal('hide');
+         }, 3000);
+        },
         };
 
       // Add our commands to annyang

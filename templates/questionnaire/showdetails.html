@@ -32,6 +32,8 @@ var qid = [{% for res in res_list %} {% for ans in ans_list %} {% if res.questio
 var qcontent = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ res.question.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
 var resp = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ res.response.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
 var answ = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ ans.option.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
+console.log(qid);
+qid=qid.reverse();
 read.push({'text':"Please listen carefully."})
 read.push({'text':"Questions that you have done wrong will be read out along with your response and correct answer."})
 for (var i=0;i<qid.length;i++)
@@ -60,6 +62,7 @@ window.onload=speakDetails
           'home': function() { document.getElementById("home").click();},
           'stop': function() { meSpeak.stop(); },
           'logout': function() { document.getElementById("logout").click(); },
+          'back' :function(){ window.history.back()},
         };
 
       // Add our commands to annyang

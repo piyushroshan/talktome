@@ -91,6 +91,7 @@
    }
 
      function submitAnswer(){
+      meSpeak.stop();
         var qid = $(".questionid").text();
         console.log(qid)
         option = $('input[name='+qid+']:checked', '#question_form').attr('id');
@@ -126,7 +127,7 @@
           'four': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); speakOptionSelected(4); },
           'five': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); speakOptionSelected(5); },
           'repeat question' : function(){ speakQues()},
-          'ok': function() { submitAnswer(); },
+          'ok': function() { meSpeak.stop();submitAnswer(); },
           'quit':function() {  
            quitFunction();
            },
