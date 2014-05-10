@@ -53,18 +53,25 @@
 		}
         window.onload = speakContent;
        if (annyang) {
+        var srt=false
+        var stp=false
+        var rpt=false
       // Let's define a command.
-        var commands = {
+         var commands = {
           'wait': function() {counter=recurseLoop; recurseLoop=c_split_result.length; console.log(recurseLoop); },
-          'start':function() {recurseLoop=counter-1; playNext(); console.log(recurseLoop); },
-          'stop' : function() {counter=recurseLoop; 
-          	recurseLoop=c_split_result.length; 
-          	console.log(recurseLoop);
-          	for(i = 0; i < c_split_result.length; i++){
-        	meSpeak.stop(c_split_result[i]);
-        	//console.log(c_split_result[i]);
-		} },
-          'repeat':function() {speakContent();},
+          'start':function() {if (rpt==false){ srt =true;stp=false;recurseLoop=counter-1; playNext(); console.log(recurseLoop); }},
+          'stop' : function() {
+            stp=true;
+            srt=false;
+            rpt=false;
+            counter=recurseLoop; 
+            recurseLoop=c_split_result.length; 
+            console.log(recurseLoop);
+            for(i = 0; i < c_split_result.length; i++){
+          meSpeak.stop(c_split_result[i]);
+          //console.log(c_split_result[i]);
+    } },
+    'repeat' :function(){ if (stp == true && srt==false) { rpt=true;stp=false; speakContent();}},
         };
 
       // Add our commands to annyang
