@@ -71,8 +71,12 @@
           meSpeak.stop(c_split_result[i]);
           //console.log(c_split_result[i]);
     } },
-    'repeat' :function(){ if (stp == true && srt==false) { rpt=true;stp=false; speakContent();}},
-    'back' :function(){ window.history.back()}
+          'repeat' :function(){ if (stp == true && srt==false) { rpt=true;stp=false; speakContent();}},
+          'back' :function(){ window.history.back()},
+          'help' : function(){ meSpeak.stop(); helpme()},
+          'refresh' :function(){ if (stp == true && srt==false) { rpt=true;stp=false; speakContent();}},
+          'home': function() { document.getElementById("home").click();},
+          'register': function() { document.getElementById("register").click(); },
         };
 
       // Add our commands to annyang
