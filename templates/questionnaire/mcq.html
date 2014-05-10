@@ -87,7 +87,7 @@
         });
         read.push({"text" : "Say OK to submit your answer"});
         console.log(read);
-        meSpeak.speakMultipart(read);
+        meSpeak.speakMultipart(read,{speed:130});
    }
 
      function submitAnswer(){
@@ -104,6 +104,18 @@
     /* Your js code */
         speakQues();
      }
+     var status;
+     var quit=false;
+     function quitFunction() {
+      quit=true;
+      meSpeak.stop();
+      var read = new Array();
+      read.push({"text":"Are you sure you want to quit?"});
+      read.push({"text":"Say yes to confirm"});
+      read.push({"text":"Say no to cancel"});
+      meSpeak.speakMultipart(read,{speed:130});
+      status = confirm("Are you sure you want to quit?");
+      }
 
     if (annyang) {
       // Let's define a command.
@@ -115,6 +127,23 @@
           'five': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); speakOptionSelected(5); },
           'repeat question' : function(){ speakQues()},
           'ok': function() { submitAnswer(); },
+          'quit':function() {  
+           quitFunction();
+           },
+           'yes':function() { console.log("hello");if(quit) {status=true; alert("true")}},
+           'no':function() { if(quit) {status=false; alert("false")}},
+          'back':function() { meSpeak.stop(); meSpeak.speak("this is not allowed",{speed:120}); dialog=bootbox.dialog("Alert", {
+    "label" : "Click me!",
+    "class" : "success",   // or primary, or danger, or nothing at all
+    "callback": function() {
+        console.log("not allowed");
+    }
+});
+          setTimeout(function() {
+    // be careful not to call box.hide() here, which will invoke jQuery's hide method
+    dialog.modal('hide');
+}, 3000);
+        },
         };
 
       // Add our commands to annyang
