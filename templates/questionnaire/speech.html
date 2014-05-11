@@ -5,12 +5,17 @@
 <body>
 <script type="text/javascript">
     var u = new SpeechSynthesisUtterance();
-     u.text = 'Hello World';
+     u.text = 'Welcome to talk to me.Please select an option.';
      u.lang = 'en-US';
-     u.rate = 1.2;
-     speechSynthesis.speak(u);
-     u.text = 'Hello Worlfhhd';
-     speechSynthesis.speak(u);
+     u.rate = 0.5;
+     window.speechSynthesis.speak(u);
+     u.text = 'Hello my name is anushree help me';
+     window.speechSynthesis.speak(u);
+      u.text = 'Hello Worlfhhd';
+     window.speechSynthesis.speak(u);
+  </script>
+  <script>
+  window.onunload=function(){ window.speechSynthesis.cancel(); };
   </script>
 </body>
 </html>

@@ -2,5 +2,42 @@
 {% load i18n %}
 
 {% block main %}
-<p>{% trans "Logged out" %}</p>
+<div class="container">
+        <h1><strong>You have successfully logged out!</strong><br>
+        <a href="/">Return to the homepage.</a><br /></h1>
+</div>
+<script type="text/javascript">
+        function speakStatus(){
+        var u = new SpeechSynthesisUtterance();
+        u.text='You have successfully logged out!';
+        window.speechSynthesis.speak(u);
+        var v = new SpeechSynthesisUtterance();
+          v.text = 'Please speak home to return to home page'
+          window.speechSynthesis.speak(v);
+        }
+        
+        window.onload = speakStatus;
+     </script>
+<script>
+     if (annyang) {
+      // Let's define a command.
+        var commands = {
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
+          'refresh' :function(){ location.reload();},
+          'home': function() { document.getElementById("home").click();},
+          'stop': function() { window.speechSynthesis.cancel(); },
+          'repeat' :function(){ window.speechSynthesis.cancel(); speakStatus(); },
+
+        };
+
+      // Add our commands to annyang
+      annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start();
+    }
+   </script>
+    <script>
+  window.onunload=function(){ window.speechSynthesis.cancel();};
+  </script>
 {% endblock %}

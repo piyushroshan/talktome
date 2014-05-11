@@ -31,7 +31,7 @@ def logout_page(request):
     Log users out and re-direct them to the main page.
     """
     logout(request)
-    return HttpResponseRedirect('/')
+    return render_to_response('registration/logout.html',context_instance=RequestContext(request))
 
 #==========================================================================================================================================================================================================		
 
@@ -125,7 +125,6 @@ def login_user(request):
     login_var=False
     user_name=pass_word=''
     if request.POST:
-
         user_name = request.POST['username']
         print "username is" 
         print user_name
@@ -152,7 +151,7 @@ def login_user(request):
                                 login(request, user)
                                 return HttpResponseRedirect('/')
                     else:
-                        return render_to_response('registration/login.html', {'message':"Invalid username or password."}, RequestContext(request))
+                        return render_to_response('registration/login.html', {'message':"Invalid username or password.",'login_var':login_var}, RequestContext(request))
                 else:
                     if percent == 100:
                         user = authenticate(username=user_name, password=pass_word)
@@ -161,7 +160,9 @@ def login_user(request):
                                 login_var=True
                                 login(request, user)
                                 return HttpResponseRedirect('/')
-	return render_to_response('registration/login.html', {'message':"Invalid username or password."}, RequestContext(request)) 
+    else:
+        return render_to_response('registration/login.html', {'message':"Invalid username or password.",'login_var':login_var}, RequestContext(request)) 
+    return render_to_response('registration/login.html', {'message':"Invalid username or password.",'login_var':login_var}, RequestContext(request)) 
 
 def lcs(a, b):
     lengths = [[0 for j in range(len(b)+1)] for i in range(len(a)+1)]

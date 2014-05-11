@@ -16,14 +16,18 @@
 </div><!-- /.container -->
   <script type="text/javascript">
     function speakOptions(){
-        var count=1;
-        var read = new Array();
-        read.push({"text":"Welcome to talk to me."});
-        read.push({"text":"Please select an option."});
+        var u = new SpeechSynthesisUtterance();
+        u.text = 'Welcome to talk to me.Please select an option.';
+        u.lang = 'en-US';
+        u.rate = 1.2;
+        window.speechSynthesis.speak(u);  
         var z = $('p a').each(function(){
-        read.push({"text":"Speak"});
-        read.push({"text":this.text});
-        read.push ({"text":"\n"});
+          var uu = new SpeechSynthesisUtterance();
+        uu.text ='speak';
+        window.speechSynthesis.speak(uu);
+        var vv = new SpeechSynthesisUtterance();
+        vv.text=this.text
+        window.speechSynthesis.speak(vv);
       });
         console.log(read);
         meSpeak.speakMultipart(read);
@@ -49,12 +53,13 @@
         var commands = {
           'Take test': function() { selectOption(1); },
           'Online study': function() { selectOption(2); },
-          'repeat': function() { speakOptions() },
-          'help' : function(){ meSpeak.stop(); helpme()},
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
           'refresh' :function(){ speakOptions()},
           'home': function() { document.getElementById("home").click();},
-          'stop': function() { meSpeak.stop(); },
+          'stop': function() { window.speechSynthesis.cancel(); },
+          'repeat' :function(){ window.speechSynthesis.cancel(); speakOptions();},
           'logout': function() { document.getElementById("logout").click(); },
+          'back' :function(){ window.history.back()},
         };
 
       // Add our commands to annyang
@@ -64,4 +69,7 @@
       annyang.start();
     }
    </script>
+   <script>
+  window.onunload=function(){ window.speechSynthesis.cancel();};
+  </script>
 {% endblock %}

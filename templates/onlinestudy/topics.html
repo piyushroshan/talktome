@@ -28,17 +28,21 @@
 <script type="text/javascript">
         function speakTopics(){
         var count=1;
-        var read = new Array();
-        read.push({"text":"Choose a topic "});
+        var u = new SpeechSynthesisUtterance();
+        u.text='Choose a topic';
+        window.speechSynthesis.speak(u);
         var z = $('h3 ol li a').each(function(){
-          read.push({"text":"topic"});
-          read.push({"text":count});
-          read.push({"text":this.text});
-          read.push ({"text":"\n"});
+          var uu = new SpeechSynthesisUtterance();
+          uu.text ='topic';
+          window.speechSynthesis.speak(uu);
+          var v = new SpeechSynthesisUtterance();
+          v.text =count
+          window.speechSynthesis.speak(v);
+          var vv = new SpeechSynthesisUtterance();
+          vv.text=this.text
+          window.speechSynthesis.speak(vv);
           count++;
         });
-        console.log(read);
-        meSpeak.speakMultipart(read);
 
 
             //var z = JSON.parse('{{ opt_list.content }}');
@@ -67,9 +71,9 @@
           'six': function() { selectOption(6); },
           'seven': function() { selectOption(7); },
           'back' :function(){ window.history.back()},
-          'help' : function(){ meSpeak.stop(); helpme()},
-          'refresh' :function(){ speakTopics();},
-          'repeat' :function(){ speakTopics();},
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
+          'refresh' :function(){ window.speechSynthesis.cancel(); speakTopics();},
+          'repeat' :function(){ window.speechSynthesis.cancel(); speakTopics();},
           'home': function() { document.getElementById("home").click();},
           'register': function() { document.getElementById("register").click(); },
         };
@@ -81,4 +85,7 @@
       annyang.start();
     }
    </script>
+     <script>
+  window.onunload=function(){ window.speechSynthesis.cancel(); };
+  </script>
 {% endblock %}

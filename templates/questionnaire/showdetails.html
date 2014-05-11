@@ -22,34 +22,102 @@
 		{% endif %}
 	{% endfor %}
 {% endfor %}
+<div class="row">
+        <center><div class="col-md-12">
+          {% if user.is_authenticated %}
+
+          <hr>
+          <p><a href="/questionnaire/subjects" id="1" class="btn btn-custom btn-lg" role="button">Take Another Test</a></p>
+          <hr>
+          <p><a href="/onlinestudy/subjects" class="btn btn-custom btn-lg" id="2" role="button">Online Study</a></p>
+
+        </hr>
+        {% else %}
+          <p><a href="{% url auth_login %}" id="1"  class="btn btn-custom btn-lg" role="button">Login</button></a><p>
+            <hr>
+            <p><a href="/onlinestudy/subjects" id="2" class="btn btn-default btn-lg" role="button">Online Study</button></a> </p>
+        </hr>
+        {% endif %}  
+    </div>
+</center>
+      </div>
 </div>
 <script type=text/javascript>
 function speakDetails()
 {
 	console.log("here")
-var read = new Array();
 var qid = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %} '{{forloop.counter|escapejs}}', {% endif %} {% endif %} {% endfor %} {% endfor %}]
 var qcontent = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ res.question.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
 var resp = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ res.response.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
 var answ = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ ans.option.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
 console.log(qid);
 qid=qid.reverse();
-read.push({'text':"Please listen carefully."})
-read.push({'text':"Questions that you have done wrong will be read out along with your response and correct answer."})
+var u = new SpeechSynthesisUtterance();
+        u.text = 'Please listen carefully.';
+        u.lang = 'en-US';
+        u.rate = 0.5;
+        window.speechSynthesis.speak(u);
+var v = new SpeechSynthesisUtterance();
+        v.text='Questions that you have done wrong will be read out along with your response and correct answer.'
+        v.lang = 'en-US';
+        v.rate = 0.5;
+        window.speechSynthesis.speak(v);
 for (var i=0;i<qid.length;i++)
 { 
-	read.push({'text':'Question'})
-	read.push({'text':qid[i]})
-	read.push({'text':qcontent[i]})
-	read.push({'text':'Your answer'})
-	read.push({'text':resp[i]})
-	read.push({'text':'Correct Answer'})
-    read.push({'text':answ[i]})
+  var uu = new SpeechSynthesisUtterance();
+          uu.text ='Question';
+          window.speechSynthesis.speak(uu);
+  var v = new SpeechSynthesisUtterance();
+          v.text =qid[i]
+          window.speechSynthesis.speak(v);
+  var vv = new SpeechSynthesisUtterance();
+          vv.text=qcontent[i]
+          window.speechSynthesis.speak(vv);
+  var uuu = new SpeechSynthesisUtterance();
+          uuu.text='Your answer'
+          window.speechSynthesis.speak(uuu);
+  var vvv = new SpeechSynthesisUtterance();
+          vvv.text=resp[i]
+          window.speechSynthesis.speak(vvv);
+var uuu1 = new SpeechSynthesisUtterance();
+          uuu1.text='correct answer'
+          window.speechSynthesis.speak(uuu1);
+  var vvv1 = new SpeechSynthesisUtterance();
+          vvv1.text=answ[i]
+          window.speechSynthesis.speak(vvv1);
+
 	console.log(qid[i],qcontent[i],resp[i],answ[i])
 }
-    meSpeak.speakMultipart(read,{speed:120});
-    
+    speakOptions();
 }
+ function speakOptions(){
+        var u = new SpeechSynthesisUtterance();
+        var v = new SpeechSynthesisUtterance();
+        v.lang = 'en-US';
+        v.rate = 0.5;
+        var status="{{ user.is_authenticated }}"
+        var n = status.localeCompare("False");
+        if (n == 0)
+        {
+        v.text = 'Speak Register';
+        window.speechSynthesis.speak(v);
+        }        
+        var z = $('p a').each(function(){
+          var uu = new SpeechSynthesisUtterance();
+        uu.text ='speak';
+        window.speechSynthesis.speak(uu);
+        var vv = new SpeechSynthesisUtterance();
+        vv.text=this.text
+        window.speechSynthesis.speak(vv);
+      });
+       u.text= 'Speak repeat to listen to options again'
+        window.speechSynthesis.speak(u);
+
+
+        //var z = JSON.parse('{{ opt_list.content }}');
+      //  alert(y)
+        //meSpeak.speak(y)
+        }
 window.onload=speakDetails
 </script>
 <script>
@@ -57,12 +125,29 @@ window.onload=speakDetails
      if (annyang) {
       // Let's define a command.
         var commands = {
-          'help' : function(){ meSpeak.stop(); helpme()},
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
           'refresh' :function(){ location.reload();},
           'home': function() { document.getElementById("home").click();},
-          'stop': function() { meSpeak.stop(); },
+          'stop': function() { window.speechSynthesis.cancel() },
+          'repeat' : function(){ window.speechSynthesis.cancel(); speakDetails()},
           'logout': function() { document.getElementById("logout").click(); },
-          'back' :function(){ window.history.back()},
+          //'feedback' :function() { document.getElementById(3).click();},
+          'Take test': function() { document.getElementById(1).click(); },
+          'Online study': function() { document.getElementById(2).click(); },
+          'back':function() { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance();
+          u.text='This is not allowed';
+          window.speechSynthesis.speak(u); dialog=bootbox.dialog("Alert", {
+          "label" : "Not allowed!",
+          "class" : "success",   // or primary, or danger, or nothing at all
+           "callback": function() {
+           console.log("not allowed");
+    }
+});
+          setTimeout(function() {
+    // be careful not to call box.hide() here, which will invoke jQuery's hide method
+    dialog.modal('hide');
+}, 3000);
+        },
         };
 
       // Add our commands to annyang
@@ -72,4 +157,7 @@ window.onload=speakDetails
       annyang.start();
     }
    </script>
+   <script>
+  window.onunload=function(){ window.speechSynthesis.cancel();};
+  </script>
 {% endblock %}

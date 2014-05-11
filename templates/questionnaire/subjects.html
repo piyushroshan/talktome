@@ -17,24 +17,23 @@
 {% endif %}
 </div>
 <script type="text/javascript">
-        function speakSubjects(){
+         function speakSubjects(){
         var count=1;
-        var read = new Array();
-        read.push({"text":"Choose a subject "});
+        var u = new SpeechSynthesisUtterance();
+        u.text='Choose a subject';
+        window.speechSynthesis.speak(u);
         var z = $('h3 ol li a').each(function(){
-          read.push({"text":"subject"});
-          read.push({"text":count});
-          read.push({"text":this.text});
-          read.push ({"text":"\n"});
+          var uu = new SpeechSynthesisUtterance();
+          uu.text ='subject';
+          window.speechSynthesis.speak(uu);
+          var v = new SpeechSynthesisUtterance();
+          v.text =count
+          window.speechSynthesis.speak(v);
+          var vv = new SpeechSynthesisUtterance();
+          vv.text=this.text
+          window.speechSynthesis.speak(vv);
           count++;
         });
-        console.log(read);
-        meSpeak.speakMultipart(read);
-
-
-            //var z = JSON.parse('{{ opt_list.content }}');
-          //  alert(y)
-            //meSpeak.speak(y)
         }
         window.onload = speakSubjects;
      </script>
@@ -53,10 +52,11 @@
           'one': function() { selectOption(1); },
           'two': function() { selectOption(2); },
           'three': function() { selectOption(3); },
-          'help' : function(){ meSpeak.stop(); helpme()},
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
           'refresh' :function(){ location.reload();},
           'home': function() { document.getElementById("home").click();},
-          'stop': function() { meSpeak.stop(); },
+          'stop': function() { window.speechSynthesis.cancel(); },
+          'repeat' :function(){ window.speechSynthesis.cancel(); speakSubjects();},
           'logout': function() { document.getElementById("logout").click(); },
           'back' :function(){ window.history.back()},
 
@@ -69,4 +69,7 @@
       annyang.start();
     }
    </script>
+   <script>
+  window.onunload=function(){ window.speechSynthesis.cancel();};
+  </script>
 {% endblock %}

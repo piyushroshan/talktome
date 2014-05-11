@@ -13,20 +13,20 @@
 <div class="container">
 <div id="login">
 <form role="form" name="LoginForm" action="/login/" method="post">
-	{% csrf_token %}
-	{% if next %}
-		<input type="hidden" name="next" value="{{ next }}" />
-	{% endif %}
+  {% csrf_token %}
+  {% if next %}
+    <input type="hidden" name="next" value="{{ next }}" />
+  {% endif %}
   <strong>{{message}}</strong>
-	<div class="form-group">
-		<label for="username">Username</label>
-			<input type="text" class = "form-control" id="username" name="username"  placeholder="Enter username">
-	</div>
-	<div class="form-group">
-		<label class="control-label" for="password">Password</label>
-			<input type="password" name="password" id="password" placeholder="Password" class="form-control">
-		</div>
-			<button type="submit" class="btn btn-default" id="submit">Login</button>
+  <div class="form-group">
+    <label for="username">Username</label>
+      <input type="text" class = "form-control" id="username" name="username"  placeholder="Enter username">
+  </div>
+  <div class="form-group">
+    <label class="control-label" for="password">Password</label>
+      <input type="password" name="password" id="password" placeholder="Password" class="form-control">
+    </div>
+      <button type="submit" class="btn btn-default" id="submit">Login</button>
 </form></div>
 <p>{% trans "Forgot password" %}? <a  href="{% url password_reset_recover %}">{% trans "Reset it" %}</a>!</p>
 <p>{% trans "Not member" %}? <a id ="register" href="/register/">{% trans "Register" %}</a>!</p>
@@ -72,7 +72,7 @@ recognition.onend = function() {
 
 
 
-	console.log("in speakusername")
+  console.log("in speakusername")
   if (recognizing) {
     recognition.stop();
     return;
@@ -126,7 +126,7 @@ recognition.onend = function() {
 
 startRecognising(event);
 function startRecognising(event) {
-	console.log("in speakpassword")
+  console.log("in speakpassword")
   if (recognizing) {
     recognition.stop();
     return;
@@ -141,42 +141,55 @@ function startRecognising(event) {
 </script>
 <script type="text/javascript">
     function welcome(){
-        var count=1;
-        var read = new Array();
         console.log("in welcome")
-        read.push({"text":"please speak your username and then wait for the next instruction"});
-        console.log(read);
-        meSpeak.speakMultipart(read);
+        var uu = new SpeechSynthesisUtterance();
+          uu.text ='please speak your username and then wait for the next instruction';
+          window.speechSynthesis.speak(uu);
         speakUsername(event);
     }
     function speakPassword(){
-        var count=1;
-        var read = new Array();
-        console.log("in welcome")
-        read.push({"text":"please speak your password and then wait"});
-        console.log(read);
-        meSpeak.speakMultipart(read);
+        console.log("inpassword")
+        var uu = new SpeechSynthesisUtterance();
+          uu.text ='please speak your password and then wait';
+          window.speechSynthesis.speak(uu);
         recognisePassword(event);
     }
     function speakLogin(){
-        var count=1;
-        var read = new Array();
         console.log("in speakLogin")
-        read.push({"text":"speak login to login to your account or "});
-        read.push({"text":"speak reload to reload the page"});
-        console.log(read);
-        meSpeak.speakMultipart(read);
+        var uu = new SpeechSynthesisUtterance();
+          uu.text ='speak login to login to your account or speak reload to reload the page';
+          window.speechSynthesis.speak(uu);
         startannyang();
        
+    }
+    function speakError(){
+      
+      var status="{{ login_var }}"
+        var n = status.localeCompare("False");
+        if (n == 0)
+        {
+         var u = new SpeechSynthesisUtterance();
+        u.text = 'Invalid username or password.'
+        u.lang = 'en-US';
+        u.rate = 0.5;
+        window.speechSynthesis.speak(u); 
+        }
+        welcome();
     }
     function startannyang()
     {
        if (annyang) {
-      	// Let's define a command.
+        // Let's define a command.
         var commands = {
           'log in': function() { submit("submit"); },
           'reload': function() { location.reload(); },
           'register': function() { document.getElementById("register").click(); },
+          'refresh' :function(){ location.reload();},
+          'repeat' :function(){ location.reload();},
+          'home': function() { document.getElementById("home").click();},
+          'back' :function(){ window.history.back()},
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
+
         };
 
       // Add our commands to annyang
@@ -187,9 +200,12 @@ function startRecognising(event) {
     }
 }
     function submit(data){
-    	console.log("here")
-       		document.getElementById(data).click();
+      console.log("here")
+          document.getElementById(data).click();
      }
-   		window.onload = welcome;
+      window.onload = speakError;
      </script> 
+     <script>
+  window.onunload=function(){ window.speechSynthesis.cancel();};
+  </script>
 {% endblock %}

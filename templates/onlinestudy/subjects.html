@@ -28,22 +28,21 @@
 <script type="text/javascript">
         function speakSubjects(){
         var count=1;
-        var read = new Array();
-        read.push({"text":"Choose a subject "});
+        var u = new SpeechSynthesisUtterance();
+        u.text='Choose a subject';
+        window.speechSynthesis.speak(u);
         var z = $('h3 ol li a').each(function(){
-          read.push({"text":"subject"});
-          read.push({"text":count});
-          read.push({"text":this.text});
-          read.push ({"text":"\n"});
+          var uu = new SpeechSynthesisUtterance();
+          uu.text ='subject';
+          window.speechSynthesis.speak(uu);
+          var v = new SpeechSynthesisUtterance();
+          v.text =count
+          window.speechSynthesis.speak(v);
+          var vv = new SpeechSynthesisUtterance();
+          vv.text=this.text
+          window.speechSynthesis.speak(vv);
           count++;
         });
-        console.log(read);
-        meSpeak.speakMultipart(read);
-
-
-            //var z = JSON.parse('{{ opt_list.content }}');
-          //  alert(y)
-            //meSpeak.speak(y)
         }
         window.onload = speakSubjects;
      </script>
@@ -67,11 +66,12 @@
           'six': function() { selectOption(6); },
           'seven': function() { selectOption(7); },
           'back' :function(){ window.history.back()},
-          'help' : function(){ meSpeak.stop(); helpme()},
-          'refresh' :function(){ speakSubjects();},
-          'repeat' :function(){ speakSubjects();},
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
+          'refresh' :function(){ window.speechSynthesis.cancel(); speakSubjects();},
+          'repeat' :function(){ window.speechSynthesis.cancel(); speakSubjects();},
           'home': function() { document.getElementById("home").click();},
           'register': function() { document.getElementById("register").click(); },
+          'stop': function() { window.speechSynthesis.cancel() },
         };
 
       // Add our commands to annyang
@@ -81,4 +81,7 @@
       annyang.start();
     }
    </script>
+   <script>
+  window.onunload=function(){ window.speechSynthesis.cancel(); };
+  </script>
 {% endblock %}

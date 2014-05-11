@@ -39,35 +39,36 @@
 </div>
      <script type="text/javascript">
     function speakOptions(){
-        var count=1;
-        var read = new Array();
-        read.push({"text":"Welcome to talk to me."});
-        read.push({"text":"Please select an option."});
+        var u = new SpeechSynthesisUtterance();
+        u.text = 'Welcome to talk to me.Please select an option.';
+        u.lang = 'en-US';
+        u.rate = 0.5;
+        window.speechSynthesis.speak(u);
+        var v = new SpeechSynthesisUtterance();
+        v.lang = 'en-US';
+        v.rate = 0.5;
         var status="{{ user.is_authenticated }}"
         var n = status.localeCompare("False");
         if (n == 0)
         {
-        read.push({"text":"Speak Register"});
-        console.log(read);
+        v.text = 'Speak Register';
+        window.speechSynthesis.speak(v);
         }        
         var z = $('p a').each(function(){
-        read.push({"text":"Speak"});
-        read.push({"text":this.text});
-        read.push ({"text":"\n"});
+          var uu = new SpeechSynthesisUtterance();
+        uu.text ='speak';
+        window.speechSynthesis.speak(uu);
+        var vv = new SpeechSynthesisUtterance();
+        vv.text=this.text
+        window.speechSynthesis.speak(vv);
       });
-        read.push({"text":"Speak repeat to listen to options again"});
-        console.log(read);
-        meSpeak.speakMultipart(read);
+       u.text= 'Speak repeat to listen to options again'
+        window.speechSynthesis.speak(u);
 
 
         //var z = JSON.parse('{{ opt_list.content }}');
       //  alert(y)
         //meSpeak.speak(y)
-        }
-        function speakRegister(){
-        var count=1;
-        var read = new Array();
-        
         }
         window.onload = speakOptions;
      </script> 
@@ -86,11 +87,11 @@
           'Take test': function() { selectOption(1); },
           'Online study': function() { selectOption(2); },
           'login': function() { console.log("login"); selectOption(1); },
-          'repeat': function() { speakOptions() },
-          'help' : function(){ meSpeak.stop(); helpme()},
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
           'refresh' :function(){ location.reload();},
           'home': function() { document.getElementById("home").click();},
-          'stop': function() { meSpeak.stop(); },
+          'stop': function() { window.speechSynthesis.cancel(); },
+          'repeat' :function(){  console.log("lrepeat");window.speechSynthesis.cancel(); speakOptions();},
           'logout': function() { document.getElementById("logout").click(); },
           'register': function() { document.getElementById("register").click(); },
         };
@@ -106,5 +107,7 @@
       console.log("annyang missing")
     }
    </script>
-
+<script>
+  window.onunload=function(){ window.speechSynthesis.cancel();};
+  </script>
 {% endblock %}

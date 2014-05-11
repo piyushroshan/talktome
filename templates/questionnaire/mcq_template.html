@@ -4,7 +4,7 @@
 		<h2>Q<span class="quescounter">{{ q_counter }}.</span><span class="questioncontent"> {{ question.content }} </span></h2><span class="questionid"  style="VISIBILITY:hidden;display:none"><sub>{{ question.id }}</sub></span>
 		<ol class="options">
 			{% for opt in opt_list %}
-			<h3><input type="radio" id ="{{opt.id}}" name="{{question.id}}" value="{{opt.content}}" >{{ opt.content }}</input></h3>
+			<h3><input type="radio" id ="{{opt.id}}" name="{{question.id}}" value="{{opt.content}}" onclick="speakOptionSelected({{forloop.counter}})" >{{ opt.content }}</input></h3>
 			{% endfor %}
 		</ol>
 		<input type="button" class="btn btn-custom btn-lg" style="margin-left:50px;" value="Submit" onclick=" submitAnswer();	return false; ">

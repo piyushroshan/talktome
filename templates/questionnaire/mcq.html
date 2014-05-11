@@ -44,21 +44,29 @@
    <script type="text/javascript">
     function speakQues(){
         var count=1;
-        var read = new Array();
         var qid = $(".quescounter").text();
         var qcontent = $(".questioncontent").text();
-        read.push({"text":"Question"});
-        read.push({"text":qid});
-        read.push({"text":qcontent});
+        var u = new SpeechSynthesisUtterance();
+          u.text='Question';
+          window.speechSynthesis.speak(u);
+        var ww = new SpeechSynthesisUtterance();
+          ww.text =qid;
+          window.speechSynthesis.speak(ww);
+        var w = new SpeechSynthesisUtterance();
+          w.text =qcontent
+          window.speechSynthesis.speak(w);
         var z = $('ol h3 input[type=radio]').each(function(){
-          read.push({"text":"option"});
-          read.push({"text":count});
-          read.push({"text":this.value});
-          read.push ({"text":"\n"});
+          var uu = new SpeechSynthesisUtterance();
+          uu.text ='option';
+          window.speechSynthesis.speak(uu);
+          var v = new SpeechSynthesisUtterance();
+          v.text =count
+          window.speechSynthesis.speak(v);
+          var vv = new SpeechSynthesisUtterance();
+          vv.text=this.value
+          window.speechSynthesis.speak(vv);
           count++;
         });
-        console.log(read);
-        meSpeak.speakMultipart(read,{speed:130});
 
 
         //var z = JSON.parse('{{ opt_list.content }}');
@@ -72,26 +80,34 @@
 
 
    function speakOptionSelected(option){
+    console.log("m here ")
+
+     window.speechSynthesis.cancel();
         var count=1;
-        var read = new Array();
-        read.push({"text" : "You have selected"});
-        read.push({"text" : "\n"});
+        var u = new SpeechSynthesisUtterance();
+          u.text='You have selected';
+          window.speechSynthesis.speak(u);
         var z = $('ol h3 input[type=radio]').each(function(){
           if (count == option){
-            read.push({"text":"option"});
-            read.push({"text":count});
-            read.push({"text":this.value});
-            read.push ({"text":"\n"});
+            var uu = new SpeechSynthesisUtterance();
+          uu.text ='option';
+          window.speechSynthesis.speak(uu);
+          var v = new SpeechSynthesisUtterance();
+          v.text =count
+          window.speechSynthesis.speak(v);
+          var vv = new SpeechSynthesisUtterance();
+          vv.text=this.value
+          window.speechSynthesis.speak(vv);
           }
           count++;
         });
-        read.push({"text" : "Say OK to submit your answer"});
-        console.log(read);
-        meSpeak.speakMultipart(read,{speed:130});
-   }
+        var w = new SpeechSynthesisUtterance();
+          w.text='Say OK to submit your answer'
+          window.speechSynthesis.speak(w);   }
 
      function submitAnswer(){
-      meSpeak.stop();
+
+     window.speechSynthesis.cancel();
         var qid = $(".questionid").text();
         console.log(qid)
         option = $('input[name='+qid+']:checked', '#question_form').attr('id');
@@ -121,19 +137,23 @@
     if (annyang) {
       // Let's define a command.
         var commands = {
+          'help' : function(){ window.speechSynthesis.cancel(); helpme()},
           'one': function() { $('ol h3 input[type=radio]').eq(0).attr('checked',true); speakOptionSelected(1); },
           'two': function() { $('ol h3 input[type=radio]').eq(1).attr('checked',true); speakOptionSelected(2); },
           'three': function() { $('ol h3 input[type=radio]').eq(2).attr('checked',true); speakOptionSelected(3); },
           'four': function() { $('ol h3 input[type=radio]').eq(3).attr('checked',true); speakOptionSelected(4); },
           'five': function() { $('ol h3 input[type=radio]').eq(4).attr('checked',true); speakOptionSelected(5); },
-          'repeat question' : function(){ speakQues()},
-          'ok': function() { meSpeak.stop();submitAnswer(); },
+          'repeat' : function(){ window.speechSynthesis.cancel(); speakQues()},
+          'stop': function() { window.speechSynthesis.cancel(); },
+          'ok': function() {  submitAnswer(); },
           'quit':function() {  
            quitFunction();
            },
            'yes':function() { console.log("hello");if(quit) {status=true; alert("true")}},
            'no':function() { if(quit) {status=false; alert("false")}},
-          'back':function() { meSpeak.stop(); meSpeak.speak("this is not allowed",{speed:120}); dialog=bootbox.dialog("Alert", {
+          'back':function() { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance();
+          u.text='This is not allowed';
+          window.speechSynthesis.speak(u); dialog=bootbox.dialog("Alert", {
     "label" : "Click me!",
     "class" : "success",   // or primary, or danger, or nothing at all
     "callback": function() {
@@ -143,7 +163,7 @@
           setTimeout(function() {
     // be careful not to call box.hide() here, which will invoke jQuery's hide method
     dialog.modal('hide');
-}, 3000);
+}, 3000); speakQues()
         },
         };
 
@@ -154,4 +174,7 @@
       annyang.start();
     }
    </script>
+   <script>
+  window.onunload=function(){ window.speechSynthesis.cancel();};
+  </script>
 {% endblock %}
