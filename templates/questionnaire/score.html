@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load dajaxice_templatetags %}
-{% block title %}Subjects{% endblock %}
+{% block title %}Score{% endblock %}
 {% dajaxice_js_import %}
 {% load bootstrap3 %}
 {# Load CSS and JavaScript #}
@@ -69,7 +69,7 @@ function speakScore(option){
         vv.text=this.text
         window.speechSynthesis.speak(vv);
       });
-       u.text= 'Speak repeat to listen to options again'
+       u.text= 'Speak repeat to listen to options again';
         window.speechSynthesis.speak(u);
 
 
@@ -77,7 +77,7 @@ function speakScore(option){
       //  alert(y)
         //meSpeak.speak(y)
         }
-   window.onLoad=speakScore()
+   window.onload=speakScore()
    </script>
    <script>
      if (annyang) {

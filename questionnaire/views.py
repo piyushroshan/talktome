@@ -52,9 +52,18 @@ def showdetails(request):
 	response=render(request,'questionnaire/showdetails.html',context)
 	return response
 
+@login_required
+def instructions(request,subject_id):
+	context={"subject_id":subject_id}
+	response=render(request,'questionnaire/instructions.html',context)
+	return response
 
 def index(request):
 	return render_to_response('questionnaire/index.html')
+@login_required
+def quit(request):
+	user=request.user
+	return render_to_response('questionnaire/quit.html')
 
 def speech(request):
 	return render_to_response('questionnaire/speech.html')

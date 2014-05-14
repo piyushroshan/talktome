@@ -15,21 +15,34 @@
 <form role="form" name="LoginForm" action="/login/" method="post">
   {% csrf_token %}
   {% if next %}
-    <input type="hidden" name="next" value="{{ next }}" />
+  <input type="hidden" name="next" value="{{ next }}" />
   {% endif %}
   <strong>{{message}}</strong>
-  <div class="form-group">
+  <div class="row">
+  <div class="col-lg-4">
     <label for="username">Username</label>
-      <input type="text" class = "form-control" id="username" name="username"  placeholder="Enter username">
+    <input type="text" class="form-control" id="username" name="username"  placeholder="username">
   </div>
-  <div class="form-group">
+</div>
+
+   <div class="row">
+  <div class="col-lg-4">
     <label class="control-label" for="password">Password</label>
-      <input type="password" name="password" id="password" placeholder="Password" class="form-control">
-    </div>
-      <button type="submit" class="btn btn-default" id="submit">Login</button>
-</form></div>
-<p>{% trans "Forgot password" %}? <a  href="{% url password_reset_recover %}">{% trans "Reset it" %}</a>!</p>
-<p>{% trans "Not member" %}? <a id ="register" href="/register/">{% trans "Register" %}</a>!</p>
+    <input class="form-control" type="password" name="password" id="password"  placeholder="password">
+</div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-lg-4">
+ <button type="submit" class="btn btn-default" id="submit">Login</button>
+</div>
+</div>
+</form>
+<div>
+ <div class="row"> 
+<p>{% trans "  Forgot password" %}? <a  href="{% url password_reset_recover %}">{% trans "Reset it" %}</a>!</p></div>
+ <div class="row">
+<p>{% trans "  Not member" %}? <a id ="register" href="/register/">{% trans "Register" %}</a>!</p></div>
 </div>
 <script>
 function speakUsername(event) {

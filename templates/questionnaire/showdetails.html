@@ -51,7 +51,6 @@ var qcontent = [{% for res in res_list %} {% for ans in ans_list %} {% if res.qu
 var resp = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ res.response.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
 var answ = [{% for res in res_list %} {% for ans in ans_list %} {% if res.question.id = ans.question.id %} {% if not res.response.content in ans.option.content %}'{{ ans.option.content|escapejs }}',{% endif %} {% endif %} {% endfor %} {% endfor %}]
 console.log(qid);
-qid=qid.reverse();
 var u = new SpeechSynthesisUtterance();
         u.text = 'Please listen carefully.';
         u.lang = 'en-US';

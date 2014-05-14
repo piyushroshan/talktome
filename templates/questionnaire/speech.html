@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html>
-<meta charset="utf-8">
-<title>Web Speech API Demo</title>
+<head>
+<meta name="description" content="Bootbox Example - Confirm">
+<script src="/static/jquery/jquery.min.js"></script>
+<link href="/static/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<script src="/static/js/bootstrap.js"></script>
+<script src="/static/js/bootbox.min.js"></script>
+<meta charset=utf-8 />
+<title>JS Bin</title>
+</head>
 <body>
-<script type="text/javascript">
-    var u = new SpeechSynthesisUtterance();
-     u.text = 'Welcome to talk to me.Please select an option.';
-     u.lang = 'en-US';
-     u.rate = 0.5;
-     window.speechSynthesis.speak(u);
-     u.text = 'Hello my name is anushree help me';
-     window.speechSynthesis.speak(u);
-      u.text = 'Hello Worlfhhd';
-     window.speechSynthesis.speak(u);
-  </script>
-  <script>
-  window.onunload=function(){ window.speechSynthesis.cancel(); };
-  </script>
-</body>
+  
+</body><script>
+$(document).ready(function () {
+  
+  
+  bootbox.confirm("Are you sure?", function(result) {
+    alert('You clicked: ' + result);
+}); 
+  
+
+  
+});
+</script>
 </html>

@@ -7,4 +7,7 @@ urlpatterns = patterns('',
     url(r'^(?P<subject_id>\d+)/$',views.mcq, name='mcq'),
     url(r'^speech$', views.speech, name='speech'),
     url(r'^showdetails$', views.showdetails, name='showdetails'),
+    url(r'^quit$', views.quit, name='quit'),
+    url(r'^(?P<subject_id>\d+)/instructions$', views.instructions, name='instructions'),
+
 )

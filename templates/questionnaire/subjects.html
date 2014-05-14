@@ -9,7 +9,7 @@
 <h3>Choose the subject
     <ol>
     {% for subject in subject_list %}
-        <hr><li><a href="/questionnaire/{{ subject.id }}/" id = "{{forloop.counter}}">{{ subject.name}}</a></li></hr>
+        <hr><li><a href="/questionnaire/{{ subject.id }}/instructions" id = "{{forloop.counter}}">{{ subject.name}}</a></li></hr>
     {% endfor %}
     </ol></h3>
 {% else %}
@@ -58,7 +58,7 @@
           'stop': function() { window.speechSynthesis.cancel(); },
           'repeat' :function(){ window.speechSynthesis.cancel(); speakSubjects();},
           'logout': function() { document.getElementById("logout").click(); },
-          'back' :function(){ window.history.back()},
+          'back' :function(){  window.speechSynthesis.cancel(); window.history.back()},
 
         };
 

@@ -3,27 +3,10 @@
 {% load dajaxice_templatetags %}
 {% block title %}Subjects{% endblock %}
 {% dajaxice_js_import %}
-{% load bootstrap3 %}
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
 
 {% block main %}
-    <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+
     {% dajaxice_js_import %}
-     <script type="text/javascript" src="/static/jquery/jquery-1.8.1.min.js"></script>
-     <script type="text/javascript" src="/static/dajax/jquery.dajax.core.js"></script>
-     <script type="text/javascript" src="/static/js/mespeak/mespeak.js"></script>
-     <script type="text/javascript" src="/static/js/annyang.min.js"></script>
-  	 <script type="text/javascript ">
-     	meSpeak.loadConfig("/static/js/mespeak/mespeak_config.json");
-    	meSpeak.loadVoice("/static/js/mespeak/voices/en/en.json");
-     </script>
 <div class="container">
 <h1>{{ subject_name }} Questions</h1>
 <div id="form_section">
@@ -124,14 +107,20 @@
      var status;
      var quit=false;
      function quitFunction() {
+      window.speechSynthesis.cancel();
       quit=true;
-      meSpeak.stop();
-      var read = new Array();
-      read.push({"text":"Are you sure you want to quit?"});
-      read.push({"text":"Say yes to confirm"});
-      read.push({"text":"Say no to cancel"});
-      meSpeak.speakMultipart(read,{speed:130});
-      status = confirm("Are you sure you want to quit?");
+     $(document).ready(function () {
+    var u = new SpeechSynthesisUtterance();
+            u.text='Are you sure you want to quit?';
+            window.speechSynthesis.speak(u);
+  
+        dialog=bootbox.confirm("Are you sure?", function(result) {
+         alert('You clicked: ' + result);
+        }); 
+  
+
+  
+});
       }
 
     if (annyang) {
@@ -149,22 +138,20 @@
           'quit':function() {  
            quitFunction();
            },
-           'yes':function() { console.log("hello");if(quit) {status=true; alert("true")}},
-           'no':function() { if(quit) {status=false; alert("false")}},
+           'yes':function() { console.log("hello");if(quit) { window.speechSynthesis.cancel(); status=true; location.href = "/questionnaire/subjects";}},
+           'no':function() { console.log("no") ;if(quit) { window.speechSynthesis.cancel(); status=false; dialog.modal('hide'); speakQues()}},
           'back':function() { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance();
-          u.text='This is not allowed';
-          window.speechSynthesis.speak(u); dialog=bootbox.dialog("Alert", {
-    "label" : "Click me!",
-    "class" : "success",   // or primary, or danger, or nothing at all
-    "callback": function() {
-        console.log("not allowed");
-    }
-});
-          setTimeout(function() {
-    // be careful not to call box.hide() here, which will invoke jQuery's hide method
-    dialog.modal('hide');
-}, 3000); speakQues()
-        },
+            u.text='This is not allowed';
+            var text="Alert"
+            window.speechSynthesis.speak(u); dialog=bootbox.dialog(text, {
+              "label" : "OK",
+              "class" : "Danger",   // or primary, or danger, or nothing at all
+              "callback": function() {
+               console.log("not allowed");
+              }
+            });
+          setTimeout(function() {dialog.modal('hide');}, 3000); 
+          speakQues() },
         };
 
       // Add our commands to annyang
@@ -175,6 +162,7 @@
     }
    </script>
    <script>
+
   window.onunload=function(){ window.speechSynthesis.cancel();};
   </script>
-{% endblock %}
+   {% endblock %}

@@ -1,4 +1,16 @@
-25/january/2014
+Setup Project
+Step 1 :Create a virtual environment and activate it
+virtualenv --distribute talkenv
+source talkenv/bin/activate
+
+step2: Install the requirements
+pip install -r requirements.txt
+
+Step3 : Run stunnel
+sudo stunnel4 dev_https
+
+Step4 : Run django server
+HTTPS=on ./manage.py runserver 0.0.0.0:8000
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ------------------------------------------------------------------------------------------------------------------------------------
 For running server on HTTPS (required for speech recognition)
